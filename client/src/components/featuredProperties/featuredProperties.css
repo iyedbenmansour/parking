@@ -1,0 +1,108 @@
+.appPromotion {
+  width:   100%;
+  max-width:   1024px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap:   20px;
+  padding:   20px;
+  background-color: #f8f9fa;
+  box-shadow:   0   2px   4px rgba(0,   0,   0,   0.1);
+}
+
+.promotionTitle {
+  font-size:   24px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  margin-bottom:   20px;
+}
+
+.appFeatures {
+  display: flex;
+  justify-content: space-around;
+  gap:   20px;
+  width:   100%;
+}
+
+.appFeature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap:   10px;
+}
+
+.appFeatureIcon {
+  width:   60px;
+  height:   60px;
+  object-fit: cover;
+}
+
+.appFeature h2 {
+  font-weight: bold;
+  color: #333;
+  margin:   0;
+}
+
+.appFeature p {
+  font-weight:   300;
+  color: #666;
+  text-align: center;
+}
+
+.appDownloadButtons {
+  display: flex;
+  justify-content: center;
+  gap:   10px;
+  margin-top:   20px;
+}
+
+.appStoreBadge {
+  width:   150px;
+  height:   50px;
+  object-fit: contain;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width:   768px) {
+  .appPromotion {
+    padding:   10px; /* Reduce padding on smaller screens */
+  }
+
+  .promotionTitle {
+    font-size:   20px; /* Reduce font size for smaller screens */
+  }
+
+  .appFeatures {
+    flex-direction: column; /* Stack features vertically on smaller screens */
+    align-items: center; /* Center features horizontally on smaller screens */
+    gap:   10px; /* Increase the gap between features */
+  }
+
+  .appFeature {
+    width:   100%; /* Take full width on smaller screens */
+    margin-bottom:   10px; /* Add some space below each feature */
+  }
+
+  .appFeatureIcon {
+    width:   40px; /* Reduce icon size on smaller screens */
+    height:   40px;
+  }
+
+  .appFeature h2 {
+    font-size:   18px; /* Reduce font size for smaller screens */
+  }
+
+  .appFeature p {
+    font-size:   14px; /* Reduce font size for smaller screens */
+  }
+
+  .appDownloadButtons {
+    gap:   5px; /* Increase the gap between buttons */
+  }
+
+  .appStoreBadge {
+    width:   100px; /* Reduce badge size on smaller screens */
+    height:   30px;
+  }
+}

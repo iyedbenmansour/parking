@@ -1,0 +1,63 @@
+.aboutUsSection {
+  width:   100%;
+  max-width:   1024px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap:   20px;
+  padding:   20px;
+  background-color: #f8f9fa;
+  box-shadow:   0   2px   4px rgba(0,   0,   0,   0.1);
+}
+
+.aboutUsItem {
+  flex:   1;
+  border-radius:   10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform   0.3s ease;
+  margin-bottom:   20px;
+}
+
+.aboutUsItem:hover {
+  transform: scale(1.05);
+}
+
+.aboutUsImg {
+  width:   100%;
+  height:   150px;
+  object-fit: cover;
+}
+
+.aboutUsDetails h2 {
+  font-size:   18px;
+  color: #444;
+  margin:   10px;
+}
+
+.aboutUsDetails p {
+  font-size:   14px;
+  font-weight:   300;
+  margin:   0   10px   10px;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width:   768px) {
+  .aboutUsSection {
+    flex-direction: column; /* Stack items vertically on smaller screens */
+    align-items: center; /* Center items horizontally on smaller screens */
+  }
+
+  .aboutUsItem {
+    flex:   1  0  100%; /* Take full width on smaller screens */
+    margin-bottom:   10px; /* Reduce space below each item */
+  }
+
+  .aboutUsDetails h2 {
+    font-size:   16px; /* Reduce font size for smaller screens */
+  }
+
+  .aboutUsDetails p {
+    font-size:   12px; /* Reduce font size for smaller screens */
+  }
+}

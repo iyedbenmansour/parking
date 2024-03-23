@@ -1,0 +1,94 @@
+
+.root {
+  width: 100%;
+  margin-inline: auto;
+  height: min-content;
+  place-content: space-between;
+  align-items: center;
+  padding: 14px;
+  background-image: linear-gradient(92.6deg, #003580 0%, #003580 100%);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: auto;
+  backdrop-filter: blur(5.5px);
+  display: flex;
+  flex-direction: row;
+ }
+ 
+ .frame1, .frame3 {
+  width: min-content;
+  height: min-content;
+  place-content: center;
+  align-items: center;
+  gap: 54px;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+ }
+ 
+ /* Responsive styles */
+ @media (max-width: 768px) {
+  .root {
+     flex-direction: column;
+     width: 100%;
+     padding: 10px;
+  }
+ 
+  .frame1, .frame3 {
+     flex-direction: column;
+     gap: 20px;
+     padding: 5px;
+  }
+ 
+  .frame2, .frame32 {
+     padding: 8px 16px;
+  }
+ }
+ 
+ .home, .help, .reservation, .contactUs, .signIn, .signUp {
+   color: #ffffff;
+   font-size: 16px;
+   font-weight: 600;
+   font-family: Poppins, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
+       'Liberation Sans', sans-serif;
+   letter-spacing: 0.06em;
+   text-transform: capitalize;
+   width: min-content;
+   height: min-content;
+   text-align: center;
+   align-items: center;
+   white-space: nowrap;
+   flex-direction: column;
+   text-decoration: none; /* Add this line to remove underline */
+   background: transparent; /* Make the background transparent */
+   border: none; /* Remove border */
+   outline: none; /* Remove outline */
+   padding: 0; /* Remove padding */
+   cursor: pointer; /* Change cursor to pointer on hover */
+  }
+  
+  .signUp:hover {
+   color: #0e5cd1; /* Change text color on hover */
+  }
+  
+  .signIn:hover {
+   color: #000000; /* Change text color on hover */
+  }
+ 
+
+ 
+ .frame2, .frame32 {
+  width: min-content;
+  height: min-content;
+  padding: 12px 32px;
+  border-radius: 10px;
+ }
+ 
+ .frame32 {
+  background-color: #fdfdfd;
+ }
+ 
+ .signUp {
+  color: #000000;
+ }
+ 

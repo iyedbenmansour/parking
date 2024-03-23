@@ -1,0 +1,140 @@
+/* Existing styles */
+.containerBox {
+    background-color: #0071c2;
+    width: 80%;
+    height: auto;
+    margin: auto;
+    margin-top: 40px;
+    border-radius: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #ffffff;
+}
+.containerBox input,
+.containerBox textarea {
+  padding:   0.5rem;
+  border:   1px solid #ccc;
+  border-radius:   5px;
+  font-size:   1rem;
+  width:   100%;
+  background-color: #fff;
+}
+
+
+.adjust {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 90%;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.reservations, .profiles {
+    flex: 45%;
+    padding: 20px;
+    border-radius: 15px;
+    background-color: #ffffff;
+    margin: 0 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+.profiles p, .reservations p {
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.profiles span, .reservations span {
+    display: block;
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #444;
+}
+
+.tiles {
+    margin-top: 10px;
+    text-decoration: none;
+    color: #000000;
+    font-weight: bolder;
+    font-size: 19px;
+    margin-bottom: 20px;
+}
+
+.reservation-box {
+    background-color: #0071c23e;
+    border-radius: 25px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative; /* Added to position the delete icon */
+}
+
+.delete-icon {
+    position: absolute;
+    top: 50%; /* Center vertically */
+    left: 93%; /* Center horizontally */
+    cursor: pointer;
+    color: #000000; /* Make the icon red for visibility */
+    font-size: 24px; /* Increase the size of the icon */
+
+}
+
+.edit-info-btn {
+    background-color: #0071c2;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.edit-info-btn:hover {
+    background-color: #005699;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .containerBox {
+        width: 95%;
+        margin-top: 20px;
+    }
+
+    .adjust {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .reservations, .profiles {
+        flex: 100%;
+        margin: 10px 0;
+    }
+
+    .profiles {
+        order: -1; /* This will make the .profiles section appear first */
+    }
+
+    .profiles p, .reservations p {
+        font-size: 14px;
+    }
+
+    .profiles span, .reservations span {
+        font-size: 18px;
+    }
+
+    .tiles {
+        font-size: 16px;
+    }
+
+    .edit-info-btn {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+}

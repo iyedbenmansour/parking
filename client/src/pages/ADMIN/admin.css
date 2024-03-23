@@ -1,0 +1,209 @@
+/* Admin.css */
+
+.admin-container {
+  max-width: 50%;
+  margin: 50px auto; /* Add a gap above and below the container */
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px; /* Add rounded corners to the container */
+ }
+ 
+ 
+ .admin-container h1 {
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 28px; /* Increase the font size for a more prominent heading */
+ }
+ 
+ ul {
+  list-style-type: none;
+  padding: 0;
+ }
+ 
+ .booking-item {
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  padding: 15px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+ }
+
+ .booking-item p, .booking-details p {
+  font-size: 16px; /* Adjust the font size for paragraphs within booking items and details */
+  font-family: 'Roboto', sans-serif; /* Use a clear and modern font */
+  font-weight: 400; /* Adjust font weight for better readability */
+  color: #333; /* Ensure text color is clear and readable */
+  text-align: left; /* Align text to the left */
+  line-height: 1.5; /* Improve readability with better line spacing */
+ }
+ 
+ .booking-item:hover {
+  background-color: #f0f0f0; /* Slightly darker background on hover */
+ }
+ 
+ .booking-details {
+  display: none;
+  padding-left: 10px;
+  opacity: 0; /* Initially hidden with opacity */
+  transition: opacity 0.3s ease; /* Smooth transition for opacity */  
+ 
+
+ }
+
+ 
+ 
+ .booking-item:hover .booking-details {
+  display: block;
+  opacity: 1; /* Fully visible on hover */
+ }
+ 
+ .delete-iconx {
+  cursor: pointer;
+  color: #000000;
+  position: absolute;
+  top: 50%;
+  left: 30%; /* Adjust this value to move the icon outside the detail box */
+  transform: translateY(-50%);
+  font-size: 24px;
+  transition: color 0.3s ease; /* Smooth transition for color change */
+}
+ 
+ .delete-iconx:hover {
+  color: #3f0606cf; /* Slightly darker red on hover */
+ }
+
+ .search-bar {
+  width: 100%; /* Full width of the container */
+  padding: 10px; /* Add some padding inside the search bar */
+  margin-bottom: 20px; /* Add some space below the search bar */
+  border: 1px solid #ddd; /* Add a border around the search bar */
+  border-radius: 5px; /* Rounded corners for a softer look */
+  font-size: 16px; /* Adjust the font size */
+  outline: none; /* Remove the default outline */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+/* admin.css */
+
+.email-link {
+  color: #000; /* Default text color */
+  cursor: pointer; /* Changes the cursor to a pointer when hovering over the email */
+ }
+ 
+ .email-link:hover {
+  color: #1280f7; /* Changes the text color to blue on hover */
+  text-decoration: underline; /* Adds an underline to the text on hover */
+ }
+ 
+
+.search-bar:focus {
+  border-color: #007bff; /* Change the border color when the search bar is focused */
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Add a subtle shadow for focus */
+}
+
+.search-bar::placeholder {
+  color: #6c757d; /* Change the placeholder text color */
+  opacity: 1; /* Make the placeholder text visible */
+}
+ 
+ /* Responsive styles */
+ @media (max-width: 768px) {
+  .admin-container {
+     width: 95%;
+     margin-top: 20px;
+  }
+ 
+  .booking-item {
+     flex-direction: column;
+     align-items: center;
+  }
+ 
+  .delete-icon {
+     position: static;
+     margin-top: 10px;
+     transform: none;
+  }
+ }
+
+
+.dashboard-container {
+  display: flex; /* Use Flexbox for layout */
+  flex-direction: column; /* Stack the items vertically */
+  align-items: center; /* Center the items horizontally */
+  gap: 20px; /* Add some gap between the items */
+  padding: 20px; /* Add some padding around the container */
+  max-width: 1200px; /* Set a max-width to keep the layout responsive */
+  margin: 0 auto; /* Center the container */
+ }
+ 
+ /* Ensure each dashboard component takes up full width */
+ .dashboard-container > * {
+  flex: 1 1 auto; /* Grow and shrink as needed, with auto width */
+  min-width: 300px; /* Ensure each dashboard has a minimum width */
+  margin: 10px 0; /* Add some margin around each dashboard */
+ }
+ 
+ /* dashboard-content.css */
+
+.dashboard-container {
+ display: flex;
+ flex-direction: column;
+ gap: 20px;
+ padding: 20px;
+ max-width: 1200px;
+ margin: 0 auto;
+}
+
+.dashboard-content {
+ background-color: #fff; /* Background color of the box */
+ border-radius: 10px; /* Rounded corners */
+ box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow effect */
+ padding: 20px; /* Padding inside the box */
+ transition: box-shadow 0.3s ease; /* Smooth transition for the shadow effect */
+}
+
+.dashboard-content:hover {
+ box-shadow: 0 8px 12px #0e5cd16d; /* Increase shadow on hover */
+}
+
+
+.dashboard-content > * {
+ width: 100%;
+}
+
+
+
+ .dashboard-split {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px; /* Adjust this value based on your design */
+  gap: 10px;
+ }
+ 
+
+ .buttons-container {
+  background-color: #0071c2;
+  color: white;
+  padding:   0.5rem   1rem;
+  border: none;
+  border-radius:   5px;
+  cursor: pointer;
+  margin-top:   1rem;
+  transition: background-color   0.3s ease;
+  font-weight: bold;
+ }
+ 
+ .buttons-container:hover {
+  background-color: #005a99;
+}

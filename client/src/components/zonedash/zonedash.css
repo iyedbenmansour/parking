@@ -1,0 +1,17 @@
+.zonedash-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.zonedash-chart {
+    width: 45%;
+    margin: 1%;
+}
+
+/* Example style for a specific bar in the Audi A4 chart */
+.bar-audi-a4 {
+    fill: #039935; /* Blue color for bars in the Audi A4 chart */
+}
+
+/* Add more styles for other bars as needed */

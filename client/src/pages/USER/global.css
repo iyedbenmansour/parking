@@ -1,0 +1,141 @@
+
+
+/* Main Content Area Styles */
+.mainContentArea {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding:   2rem;
+    height: auto;
+    width:   100vw;
+  }
+  .mainContentArea.input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Form Styles */
+  .bookingForm {
+    flex:   0   0   50%;
+    display: flex;
+    flex-direction: column;
+    gap:   1rem;
+    background-color: #f8f8f8;
+    border-radius:   10px;
+    box-shadow:   0   2px   4px rgba(0,   0,   0,   0.1);
+    padding:   2rem;
+    max-width:   100%;
+  }
+  
+  /* Form Styles */
+.bookingForm select {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  width: 100%;
+  background-color: #fff; /* Ensure the background color matches the input and textarea */
+  appearance: none; /* Remove default browser styling */
+  -webkit-appearance: none; /* For Safari */
+  -moz-appearance: none; /* For Firefox */
+  -ms-appearance: none; /* For Internet Explorer */
+ }
+ 
+ /* Optionally, style the dropdown arrow to match the design */
+ .bookingForm select::-ms-expand {
+  display: none; /* Hide the default dropdown arrow in IE */
+ }
+ 
+ .bookingForm select::-webkit-scrollbar {
+  width: 10px; /* Width of the scrollbar */
+ }
+ 
+ .bookingForm select::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Color of the track */
+ }
+ 
+ .bookingForm select::-webkit-scrollbar-thumb {
+  background: #888; /* Color of the scrollbar thumb */
+ }
+ 
+ .bookingForm select::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Color of the scrollbar thumb on hover */
+ }
+ 
+  .bookingForm h2 {
+    font-size:   1.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom:   1rem;
+    text-align: center;
+  }
+  
+  .bookingForm label {
+    font-weight: bold;
+    margin-bottom:   0.5rem;
+    color: #333;
+  }
+  
+  .bookingForm input,
+  .bookingForm textarea {
+    padding:   0.5rem;
+    border:   1px solid #ccc;
+    border-radius:   5px;
+    font-size:   1rem;
+    width:   100%;
+    background-color: #fff;
+  }
+  
+  .bookingForm button {
+    background-color: #0071c2;
+    color: white;
+    padding:   0.5rem   1rem;
+    border: none;
+    border-radius:   5px;
+    cursor: pointer;
+    margin-top:   1rem;
+    transition: background-color   0.3s ease;
+    font-weight: bold;
+  }
+  
+  .bookingForm button:hover {
+    background-color: #005a99;
+  }
+
+  .bookingForm h3 {
+    margin-top: 0;
+    color: #333; /* Darker text for better contrast */
+    font-weight: bold; /* Bold title */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Add a subtle text shadow */
+    font-family: 'Open Sans', sans-serif; /* Use the Open Sans font */
+    text-transform: uppercase; /* Make the title uppercase */
+    letter-spacing: 1px; /* Add some letter spacing */
+    text-align: center;
+}
+
+.bookingForm p {
+  margin-bottom: 0;
+  color: #666; /* Lighter text for subtlety */
+  font-family: 'Open Sans', sans-serif; /* Use the Open Sans font */
+  font-weight: bold; /* Bold title */
+  text-align: center;
+  font-size: 16px; /* Adjust the font size */
+  line-height: 1.5; /* Adjust the line height for better readability */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Add a subtle text shadow */
+
+}
+  
+  /* Media Queries for Responsiveness */
+  @media (max-width:   768px) {
+    .mainContentArea {
+      flex-direction: column;
+      height: auto;
+    }
+  
+    .contactForm {
+      width:   100%;
+      margin-bottom:   2rem;
+    }
+  }
+  

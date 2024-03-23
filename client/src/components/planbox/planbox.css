@@ -1,0 +1,70 @@
+/* PlanBox.css */
+
+.plan-box {
+    background: linear-gradient(135deg, #055e9e32 0%, #78676725 100%); /* Gradient background */
+    border-radius: 15px; /* Rounded corners */
+    padding: 30px; /* Increased padding for better spacing */
+    margin: 20px; /* Increased margin for better spacing */
+    width: 300px; /* Increased width for a more spacious look */
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    transition: transform 0.3s ease-in-out; /* Smooth transition for hover effect */
+}
+
+.plan-box:hover {
+    transform: translateY(-5px); /* Slight lift on hover */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); /* Increased shadow on hover */
+}
+
+.plan-box h3 {
+    margin-top: 0;
+    color: #333; /* Darker text for better contrast */
+    font-weight: bold; /* Bold title */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Add a subtle text shadow */
+    font-family: 'Open Sans', sans-serif; /* Use the Open Sans font */
+    text-transform: uppercase; /* Make the title uppercase */
+    letter-spacing: 1px; /* Add some letter spacing */
+}
+
+
+
+.plan-box p {
+    margin-bottom: 0;
+    color: #666; /* Lighter text for subtlety */
+    font-family: 'Open Sans', sans-serif; /* Use the Open Sans font */
+    font-weight: bold; /* Bold title */
+
+    font-size: 16px; /* Adjust the font size */
+    line-height: 1.5; /* Adjust the line height for better readability */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Add a subtle text shadow */
+}
+
+/* Ensure the parent container has enough space for the boxes */
+/* PlanBox.css */
+
+/* Existing styles for .plan-box, .plan-box h3, .plan-box p */
+
+.plan-box .price-container {
+    display: flex; /* Use flexbox to allow the button to expand */
+    justify-content: center; /* Center the button horizontally */
+    align-items: center; /* Center the button vertically */
+    width: 100%; /* Ensure the container takes up the full width of the plan-box */
+    padding: 10px; /* Add some padding around the button */
+}
+
+.plan-box .price-button {
+    background-color: #0000001b; /* Make the button transparent */
+    color: #ffffff; /* Change the text color to a contrasting color */
+    border: none; /* Remove default button border */
+    padding: 10px 20px; /* Add padding */
+    border-radius: 60px; /* Rounded corners */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    font-weight: bold; /* Make the text bold */
+    width: 100%; /* Make the button take up all available width */
+    text-align: center; /* Center the text */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.plan-box .price-button:hover {
+    background-color: #00000050; /* Add a subtle background color on hover */
+}
