@@ -14,6 +14,7 @@ import Profile from "./pages/USER/profile/Profile";
 import EditP from "./pages/USER/profile/EditP";
 import AllBook from "./pages/ADMIN/AllBook";
 import AllUser from "./pages/ADMIN/AllUser";
+import Alladmins from "./pages/ADMIN/Alladmin";
 import Admin from "./pages/ADMIN/Admin";
 function App() {
   return (
@@ -30,6 +31,8 @@ function App() {
           <Route path="/edit" element={<EditP/>}/>
           <Route path="/allbooking" element={<AllBook/>}/>
           <Route path="/alluser" element={<AllUser/>}/>
+          <Route path="/alladmin" element={<Alladmins/>}/>
+
           <Route path="/admin" element={<Admin/>}/>
 
 

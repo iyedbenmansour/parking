@@ -7,7 +7,7 @@ import { FaTrash } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom"; 
 import { jwtDecode } from 'jwt-decode'; 
 
-const AllUsers = () => {
+const AllAdmins = () => {
  const [isAdmin, setIsAdmin] = useState(false);
  const navigate = useNavigate();
  const location = useLocation(); // Move useLocation to the top level
@@ -17,20 +17,20 @@ const AllUsers = () => {
  const [search, setSearch] = useState(""); // State to hold the search input
  const [isSearchActive, setIsSearchActive] = useState(false); // State to track if search is active
 
- useEffect(() => {
-     const token = sessionStorage.getItem('token'); // Assuming the token is stored in sessionStorage
-     if (token) {
-       const decodedToken = jwtDecode(token);
-       if (decodedToken.role === 'admin') {
-         setIsAdmin(true);
-       } else {
-         alert('You are not an admin');
-         navigate('/'); // Redirect to home or any other page
-       }
-     } else {
-       navigate('/'); // Redirect to home or any other page if no token is found
-     }
- }, [navigate]);
+    useEffect(() => {
+        const token = sessionStorage.getItem('token'); // Assuming the token is stored in sessionStorage
+        if (token) {
+        const decodedToken = jwtDecode(token);
+        if (decodedToken.role === 'admin') {
+            setIsAdmin(true);
+        } else {
+            alert('You are not an admin');
+            navigate('/'); // Redirect to home or any other page
+        }
+        } else {
+        navigate('/'); // Redirect to home or any other page if no token is found
+        }
+    }, [navigate]);
 
  useEffect(() => {
     const fetchUsers = async () => {
@@ -60,11 +60,12 @@ const AllUsers = () => {
  };
 
  const resetSearch = () => {
-    window.location.href = "/alluser";
+    window.location.href = "/alladmin"; // Updated to navigate to /alladmin
  };
 
+ // Filter users to show only those with an 'admin' role
  const filteredUsers = users.filter(
-    (user) =>
+    (user) => user.role === 'admin' &&
       (isSearchActive &&
         (user.fullname.toLowerCase().includes(search.toLowerCase()) ||
           user.email.toLowerCase().includes(search.toLowerCase()))) ||
@@ -80,7 +81,7 @@ const AllUsers = () => {
     <>
       <Navbar />
       <div className="admin-container">
-        <h1 onClick={resetSearch}>Users</h1>{" "}
+        <h1 onClick={resetSearch}>Admins</h1>{" "}
         <input
           type="text"
           placeholder="Search by Name or Email"
@@ -111,7 +112,7 @@ const AllUsers = () => {
             ))}
           </ul>
         ) : (
-          <p className="no-bookings">No users found.</p>
+          <p className="no-bookings">No admins found.</p>
         )}
       </div>
       <Footer />
@@ -119,4 +120,4 @@ const AllUsers = () => {
  );
 };
 
-export default AllUsers;
+export default AllAdmins;

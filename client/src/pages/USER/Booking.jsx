@@ -32,16 +32,7 @@ const Booking = () => {
     }
  };
 
- // Function to fetch booking form data
- async function bookform() {
-    const token = sessionStorage.getItem("token");
-    const response = await axios.get("http://localhost:5000/api/bookform", {
-      headers: {
-        "x-access-token": token,
-      },
-    });
-    console.log(response.data);
- }
+
 
  useEffect(() => {
     const token = sessionStorage.getItem("token");
@@ -49,7 +40,6 @@ const Booking = () => {
       sessionStorage.removeItem("token");
       navigate("/login");
     } else {
-      bookform();
     }
  }, [navigate]);
 

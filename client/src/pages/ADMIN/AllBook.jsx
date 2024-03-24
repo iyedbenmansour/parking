@@ -2,31 +2,36 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "../../components/navbar/Navbar";
 import Footer from "../../components/footer/Footer";
-import "./admin.css"; // Import the CSS file
-import { FaTrash } from "react-icons/fa"; // Import the FaTrash icon
-import { useNavigate, useLocation } from "react-router-dom"; // Import useNavigate and useLocation from react-router-dom
+import "./admin.css"; 
+import { FaTrash } from "react-icons/fa"; 
+import { useNavigate, useLocation } from "react-router-dom"; 
+import { jwtDecode } from 'jwt-decode'; 
 
 const AllBook = () => {
-  const navigater = useNavigate();
-  const [errorType, setErrorType] = useState("");
-  const [specificErrorOptions, setSpecificErrorOptions] = useState([]);
+ const [isAdmin, setIsAdmin] = useState(false);
+ const navigate = useNavigate();
+ const location = useLocation(); // Move useLocation to the top level
+ const queryParams = new URLSearchParams(location.search); // Parse the query parameters
+ const email = queryParams.get("email"); // Get the email query parameter
+ const [bookings, setBookings] = useState([]);
+ const [search, setSearch] = useState(""); // State to hold the search input
 
-  useEffect(() => {
-    const token = sessionStorage.getItem("token");
-    if (!token) {
-      sessionStorage.removeItem("token");
-      navigate("/login");
-    }
-  }, [navigater]);
+ useEffect(() => {
+     const token = sessionStorage.getItem('token'); // Assuming the token is stored in sessionStorage
+     if (token) {
+       const decodedToken = jwtDecode(token);
+       if (decodedToken.role === 'admin') {
+         setIsAdmin(true);
+       } else {
+         alert('You are not an admin');
+         navigate('/'); // Redirect to home or any other page
+       }
+     } else {
+       navigate('/'); // Redirect to home or any other page if no token is found
+     }
+ }, [navigate]);
 
-  const [bookings, setBookings] = useState([]);
-  const [search, setSearch] = useState(""); // State to hold the search input
-  const navigate = useNavigate(); // Initialize useNavigate
-  const location = useLocation(); // Initialize useLocation
-  const queryParams = new URLSearchParams(location.search); // Parse the query parameters
-  const email = queryParams.get("email"); // Get the email query parameter
-
-  useEffect(() => {
+ useEffect(() => {
     const fetchBookings = async () => {
       try {
         const response = await axios.get(
@@ -39,36 +44,37 @@ const AllBook = () => {
     };
 
     fetchBookings();
-  }, []);
+ }, []);
 
-  const handleDelete = async (bookingId) => {
+ const handleDelete = async (bookingId) => {
     try {
       await axios.delete(`http://localhost:5000/api/bookings/${bookingId}`);
       setBookings(bookings.filter((booking) => booking._id !== bookingId));
     } catch (error) {
       console.error("Error deleting booking:", error);
     }
-  };
+ };
 
-  // Function to handle the search
-  const handleSearch = (event) => {
+ const handleSearch = (event) => {
     setSearch(event.target.value);
-  };
+ };
 
-  // Filter bookings based on the search input and email query parameter
-  const filteredBookings = bookings.filter(
+ const filteredBookings = bookings.filter(
     (booking) =>
       (booking.licensePlate.toLowerCase().includes(search.toLowerCase()) ||
         booking.email.toLowerCase().includes(search.toLowerCase())) &&
       (!email || booking.email.toLowerCase() === email.toLowerCase())
-  );
+ );
 
-  // Reset search state when clicking on the header
-  const resetSearch = () => {
+ const resetSearch = () => {
     window.location.href = "/allbooking";
-  };
+ };
 
-  return (
+ if (!isAdmin) {
+     return null;
+ }
+
+ return (
     <>
       <Navbar />
       <div className="admin-container">
@@ -86,27 +92,27 @@ const AllBook = () => {
               <li key={index} className="booking-item">
                 <p>{booking.licensePlate}</p>
                 <div className="booking-details">
-                  <p
+                 <p
                     className="email-link "
                     onClick={() => navigate(`/alluser?email=${booking.email}`)}
-                  >
+                 >
                     Email: {booking.email}
-                  </p>
-                  <p>Airport: {booking.carModel}</p>
-                  <p>
+                 </p>
+                 <p>Airport: {booking.carModel}</p>
+                 <p>
                     Booking Start Date:{" "}
                     {new Date(booking.bookingStartDate).toLocaleDateString()}
-                  </p>
-                  <p>
+                 </p>
+                 <p>
                     Booking End Date:{" "}
                     {new Date(booking.bookingEndDate).toLocaleDateString()}
-                  </p>
-                  <p>Price: {booking.price} dt</p>
-                  <p>Title: {booking.title}</p>
+                 </p>
+                 <p>Price: {booking.price} dt</p>
+                 <p>Title: {booking.title}</p>
                 </div>
                 <FaTrash
-                  className="delete-iconx"
-                  onClick={() => handleDelete(booking._id)}
+                 className="delete-iconx"
+                 onClick={() => handleDelete(booking._id)}
                 />
               </li>
             ))}
@@ -117,7 +123,7 @@ const AllBook = () => {
       </div>
       <Footer />
     </>
-  );
+ );
 };
 
 export default AllBook;

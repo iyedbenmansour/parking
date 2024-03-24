@@ -90,21 +90,21 @@ app.get('/api/allusers', async (req, res) => {
     }
    });
 
-app.post("/api/login", async (req, res) => {
+   app.post("/api/login", async (req, res) => {
     try {
         const user = await UserModel.findOne({
             email: req.body.email,
             password: req.body.password
         });
         if (user) {
-
-                const token = jwt.sign({
-                    email: user.email,
-                    id: user._id
-                }, 'secret123');
+            const token = jwt.sign({
+                email: user.email,
+                id: user._id,
+                role: user.role ,
+            }, 'secret123');
 
             res.json({
-                user:token,
+                user: token,
                 message: "user exists"
             });
         } else {
@@ -116,33 +116,6 @@ app.post("/api/login", async (req, res) => {
     }
 });
 
-app.get("/api/bookform", async (req, res) => {
-    const token = req.headers['x-access-token'];
-    try {
-        const decoded = jwt.verify(token, 'secret123');
-        const email = decoded.email;
-        const user = await UserModel.findOne({ email: email });
-        
-        if (!user) {
-            return res.status(404).json({ status: 'error', message: 'User not found' });
-        }
-        
-        // Update user's booking information
-        user.booking = req.body; // Assuming req.body contains booking information
-        await user.save();
-        
-        res.json({
-            status: 'success',
-            data: token
-        });
-    } catch (error) {
-        console.log(error);
-        res.status(401).json({
-            status: 'error',
-            message: 'Invalid token'
-        });
-    }
-});
 app.post("/api/booking", async (req, res) => {
     try {
         const {email , carModel, licensePlate, bookingStartDate, bookingEndDate , price , title} = req.body;

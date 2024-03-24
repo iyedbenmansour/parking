@@ -83,6 +83,9 @@
     font-size: 24px; /* Increase the size of the icon */
 
 }
+.delete-icon:hover {
+    color: #b01a1acf; /* Slightly darker red on hover */
+   }
 
 .edit-info-btn {
     background-color: #0071c2;
