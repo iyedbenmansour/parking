@@ -26,28 +26,26 @@ const Login = () => {
  // Function to handle form submission
  const handleLogin = async (e) => {
   e.preventDefault();
-  
+ 
   const User = {
-    password,
-    email,
-    
+     password,
+     email,
   };
-  axios.post("http://localhost:5000/api/login", User)
-    .then(res => console.log(res.data))
-    .catch(err => console.error(err));
-
-
-      const response = await axios.post("http://localhost:5000/api/login", User);
-
-    if (response.data.user) {
-      sessionStorage.setItem("token", response.data.user);
-      alert("Logged in");
-      window.location.href = "/";
-    } else {
-      alert("Wrong credentials");
-    }
-
-};
+ 
+  try {
+     const response = await axios.post("http://localhost:5000/api/login", User);
+ 
+     if (response.data.user) {
+       sessionStorage.setItem("token", response.data.user);
+       alert("Logged in");
+       navigate('/'); // Use navigate from useNavigate instead of window.location.href
+     }
+  } catch (err) {
+     console.error(err);
+     alert("Wrong credentials .");
+  }
+ };
+ 
 
 
   return (

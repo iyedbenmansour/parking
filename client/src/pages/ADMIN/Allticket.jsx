@@ -16,7 +16,7 @@ const Allticket = () => { // Corrected component name
      const fetchContacts = async () => {
        try {
          const response = await axios.get("http://localhost:5000/api/contacts");
-         setContacts(response.data.contacts);
+         setContacts(response.data.contacts.reverse());
        } catch (error) {
          console.error("Error fetching contacts:", error);
        }
@@ -78,6 +78,9 @@ const Allticket = () => { // Corrected component name
                 <p>Error Type: {contact.errorType}</p> {/* Adjusted to match contact object properties */}
                 <p>Specific Error: {contact.specificError}</p> {/* Adjusted to match contact object properties */}
                 <p>Message: {contact.message}</p> {/* Adjusted to match contact object properties */}
+                <p>
+                 Created At: {new Date(contact.createdAt).toLocaleDateString()}
+                </p>
               </div>
                 <FaTrash
                  className="delete-iconx"

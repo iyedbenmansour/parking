@@ -12,40 +12,54 @@ function Profile() {
  const [contacts, setContacts] = useState([]);
  const [user, setUser] = useState(null);
 
+ const navigate = useNavigate();
+
  useEffect(() => {
     const token = sessionStorage.getItem("token");
-    const decodedToken = jwtDecode(token);
-    const email = decodedToken.email;
+    if (!token) {
+      sessionStorage.removeItem("token");
+      navigate("/login");
+    }
+ }, [navigate]);
 
-    // Fetch contacts
-    axios
-      .get(`http://localhost:5000/api/contact?email=${email}`)
-      .then((response) => {
-        setContacts(response.data.contact.reverse());
-      })
-      .catch((error) => {
-        console.error("Error fetching contacts:", error);
-      });
+ useEffect(() => {
+    const token = sessionStorage.getItem("token");
+    if (typeof token === 'string') { // Ensure the token is a string
+      const decodedToken = jwtDecode(token);
+      const email = decodedToken.email;
 
-    // Fetch bookings
-    axios
-      .get(`http://localhost:5000/api/bookings?email=${email}`)
-      .then((response) => {
-        setBookings(response.data.bookings.reverse());
-      })
-      .catch((error) => {
-        console.error("Error fetching bookings:", error);
-      });
+      // Fetch contacts
+      axios
+        .get(`http://localhost:5000/api/contact?email=${email}`)
+        .then((response) => {
+          setContacts(response.data.contact.reverse());
+        })
+        .catch((error) => {
+          console.error("Error fetching contacts:", error);
+        });
 
-    // Fetch user information
-    axios
-      .get(`http://localhost:5000/api/user/${email}`)
-      .then((response) => {
-        setUser(response.data.user);
-      })
-      .catch((error) => {
-        console.error("Error fetching user details:", error);
-      });
+      // Fetch bookings
+      axios
+        .get(`http://localhost:5000/api/bookings?email=${email}`)
+        .then((response) => {
+          setBookings(response.data.bookings.reverse());
+        })
+        .catch((error) => {
+          console.error("Error fetching bookings:", error);
+        });
+
+      // Fetch user information
+      axios
+        .get(`http://localhost:5000/api/user/${email}`)
+        .then((response) => {
+          setUser(response.data.user);
+        })
+        .catch((error) => {
+          console.error("Error fetching user details:", error);
+        });
+    } else {
+      console.error("Token is not a string:", token);
+    }
  }, []);
 
  const handleDelete = (bookingId) => {
@@ -76,8 +90,6 @@ function Profile() {
       });
  };
 
- const navigate = useNavigate();
-
  const handleEdit = () => {
     navigate("/edit");
  };
@@ -85,7 +97,23 @@ function Profile() {
  return (
     <>
       <Navbar />
+      <p className="welcome">Welcome {user?.fullname }</p>
       <div className="containerBox">
+        <div className="userinfo">
+          <div className="reservation-box">
+            {user && (
+              <div className="user-data">
+                <h2>Your personal information</h2>
+                <p>Name: {user.fullname}</p>
+                <p>Email: {user.email}</p>
+                <p>Phone Number: {user.phoneNumber}</p>
+                <p> Role: {user.role}</p>
+
+                <button onClick={handleEdit}>Edit Profile</button>
+              </div>
+            )}
+          </div>
+        </div>
         <div className="adjust">
           <div className="reservations">
             <span className="tiles">Reservation history :</span>
@@ -111,8 +139,8 @@ function Profile() {
             ))}
           </div>
 
-          <div className="profiles">
-            <span>Your ticket : </span>
+          <div className="reservations">
+            <span className="tiles">Your ticket : </span>
             {contacts.map((contact, index) => (
               <div key={index} className="reservation-box">
                 <FaTrash

@@ -40,7 +40,7 @@ export default function Admin() {
             <button className="buttons-container" onClick={() => navigate('/allbooking')}>All Bookings</button>
             <button className="buttons-container" onClick={() => navigate('/allticket')}>All Tickets</button>
             <button className="buttons-container" onClick={() => navigate('/alluser')}>All Users</button>
-            <button className="buttons-container" onClick={() => navigate('/alladmin')}>Check Admins</button>
+            <button className="buttons-container" onClick={() => navigate('/')}>reserve space</button>
           </div>
           <div className="dashboard-content">
             <Userdash />

@@ -37,13 +37,13 @@ const AllBook = () => {
         const response = await axios.get(
           "http://localhost:5000/api/allbookings"
         );
-        setBookings(response.data.bookings);
+        setBookings(response.data.bookings.reverse());
       } catch (error) {
         console.error("Error fetching bookings:", error);
       }
     };
 
-    fetchBookings();
+    fetchBookings();  
  }, []);
 
  const handleDelete = async (bookingId) => {
