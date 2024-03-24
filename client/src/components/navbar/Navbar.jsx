@@ -42,12 +42,12 @@ const Navbar = memo(function Navbar({ className = '' }) {
           <a href="/help" className="help">Help</a> // Show "Help" if user is not admin
         )}
           {isAdmin ? (
-          <a href="/alluser" className="reservation">users</a> // Show "Dashboard" if user is admin
+          <a href="/alluser" className="reservation">users</a> 
         ) : (
         <a href="/booking" className="reservation">Reservation</a>
         )}
          {isAdmin ? (
-          <a href="/allbooking" className="reservation">bookings</a> // Show "Dashboard" if user is admin
+          <a href="/allbooking" className="reservation">bookings</a> 
         ) : (
         <a href="/contactus" className="contactUs">Contact Us</a>
         )}

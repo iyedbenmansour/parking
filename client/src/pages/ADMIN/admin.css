@@ -207,3 +207,69 @@
  .buttons-container:hover {
   background-color: #005a99;
 }
+
+/* Existing CSS remains unchanged */
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .admin-container {
+     width: 95%;
+     margin-top: 20px;
+  }
+ 
+  .booking-item {
+     flex-direction: column;
+     align-items: center;
+  }
+ 
+  .delete-iconx {
+     position: static;
+     margin-top: 10px;
+     transform: none;
+  }
+ 
+  .dashboard-container {
+     flex-direction: column;
+     gap: 10px;
+     padding: 10px;
+  }
+ 
+  .dashboard-container > * {
+     min-width: 100%;
+     margin: 5px 0;
+  }
+ 
+  .dashboard-content {
+     padding: 10px;
+  }
+ 
+  .buttons-container {
+     padding: 0.5rem 0.5rem;
+     font-size: 0.8rem;
+  }
+ }
+ 
+ @media (max-width: 480px) {
+  .admin-container {
+     width: 100%;
+     margin-top: 10px;
+  }
+ 
+  .booking-item {
+     padding: 10px;
+  }
+ 
+  .dashboard-container {
+     padding: 10px;
+  }
+ 
+  .dashboard-content {
+     padding: 10px;
+  }
+ 
+  .buttons-container {
+     padding: 0.5rem 0.5rem;
+     font-size: 0.7rem;
+  }
+ }
+ 

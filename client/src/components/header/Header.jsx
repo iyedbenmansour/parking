@@ -31,9 +31,7 @@ const Header = ({ type }) => {
     navigate("/empty", { state: { destination, date } });
   };
 
-  const handleRegisterClick = () => {
-    navigate('/register');
-  };
+ 
 
   return (
     <div className="header">
@@ -59,7 +57,6 @@ const Header = ({ type }) => {
               Maximize Your Savings – Discover Instant Parking Discounts Up to
               10%!
             </p>
-            <button className="headerBtn" onClick={handleRegisterClick}>Sign in / Register</button>
             <div className="headerSearch">
               <div className="headerSearchItem">
                 <FontAwesomeIcon icon={faMapMarkerAlt} className="headerIcon" />

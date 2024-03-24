@@ -8,8 +8,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const UserModel = require("./models/userModels");
-
 const BookingModel = require("./models/bookingModels");
+const ContactUsModel = require("./models/contactusModel");
+
 require('dotenv').config();
 const port = process.env.PORT;
 
@@ -188,7 +189,60 @@ app.delete("/api/bookings/:id", async (req, res) => {
     }
 });
 
+app.post("/api/contact", async (req, res) => {
+    try {
+       const contactUsData = new ContactUsModel({
+         email: req.body.email, 
+         errorType: req.body.errorType,
+         specificError: req.body.specificError,
+         message: req.body.message,
+       });
+   
+       await contactUsData.save();
+       res.status(201).json({ message: "Contact form submitted successfully." });
+    } catch (error) {
+       res.status(500).json({ error: "An error occurred while submitting the contact form." });
+    }
+   });
+   
+ 
+   
+   // GET endpoint to fetch all contact form submissions
+   app.get("/api/contacts", async (req, res) => {
+       try {
+           // Query the database for all contact form submissions
+           const contacts = await ContactUsModel.find({});
+   
+           // Send the contacts in the response
+           res.status(200).json({ contacts });
+       } catch (error) {
+           console.error("Error fetching contacts:", error);
+           res.status(500).json({ error: "An error occurred while fetching contacts." });
+       }
+   });
+   
+   app.delete("/api/contacts/:id", async (req, res) => {
+    try {
+        // Extract the contact ID from the request parameters
+        const contactId = req.params.id;
 
+        // Find and delete the contact by its ID
+        const result = await ContactUsModel.findByIdAndDelete(contactId);
+
+        // Check if the contact was found and deleted
+        if (result) {
+            // Send a success message
+            res.status(200).json({ message: "Contact deleted successfully." });
+        } else {
+            // Send an error message if the contact was not found
+            res.status(404).json({ error: "Contact not found." });
+        }
+    } catch (error) {
+        console.error("Error deleting contact:", error);
+        // Send a server error message
+        res.status(500).json({ error: "An error occurred while deleting the contact." });
+    }
+});
 
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
