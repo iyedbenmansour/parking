@@ -207,7 +207,6 @@ app.post("/api/contact", async (req, res) => {
    
  
    
-   // GET endpoint to fetch all contact form submissions
    app.get("/api/contacts", async (req, res) => {
        try {
            // Query the database for all contact form submissions
@@ -220,6 +219,29 @@ app.post("/api/contact", async (req, res) => {
            res.status(500).json({ error: "An error occurred while fetching contacts." });
        }
    });
+
+   app.get("/api/contact", async (req, res) => {
+    console.log("Contact retrieval initiated"); // Debugging line
+    try {
+        // Extract the email from the query parameters
+        const { email } = req.query;
+        console.log(`Fetching contact for email: ${email}`); // Debugging line
+
+        // Fetch contacts for the specified email
+        const contact = await ContactUsModel.find({ email: email });
+        console.log(`Fetched contacts: ${JSON.stringify(contact)}`); // Debugging line
+
+        res.json({
+            contact: contact,
+            message: "Contact fetched successfully"
+        });
+    } catch (error) {
+        console.error("Error fetching contact:", error);
+        res.status(500).json({ message: "Error fetching contact" });
+    }
+});
+
+
    
    app.delete("/api/contacts/:id", async (req, res) => {
     try {
