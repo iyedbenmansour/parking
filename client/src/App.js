@@ -17,6 +17,7 @@ import AllUser from "./pages/ADMIN/AllUser";
 import Alladmins from "./pages/ADMIN/Alladmin";
 import Allticket from "./pages/ADMIN/Allticket";
 import Admin from "./pages/ADMIN/Admin";
+import Addadmin from "./pages/USER/Addadmin";
 function App() {
   return (
       <BrowserRouter>
@@ -35,8 +36,7 @@ function App() {
           <Route path="/alladmin" element={<Alladmins/>}/>
           <Route path="/allticket" element={<Allticket/>}/>
           <Route path="/admin" element={<Admin/>}/>
-
-
+          <Route path="/addadmin" element={<Addadmin/>}/>
         </Routes>
       </BrowserRouter>
   );

@@ -22,26 +22,74 @@ const ContactUs = () => {
  }, [navigate]);
 
  const handleErrorTypeChange = (e) => {
-    setErrorType(e.target.value);
-    switch (e.target.value) {
-      case "payment":
-        setSpecificErrorOptions([
-          { value: "insufficientFunds", label: "Insufficient Funds" },
-          { value: "cardDeclined", label: "Card Declined" },
-          // Add more payment-related options here
-        ]);
-        break;
-      case "login":
-        setSpecificErrorOptions([
-          { value: "wrongPassword", label: "Wrong Password" },
-          { value: "accountLocked", label: "Account Locked" },
-          // Add more login-related options here
-        ]);
-        break;
-      default:
-        setSpecificErrorOptions([]);
-    }
- };
+  setErrorType(e.target.value);
+  switch (e.target.value) {
+    case "payment":
+      setSpecificErrorOptions([
+        { value: "insufficientFunds", label: "Insufficient Funds" },
+        { value: "cardDeclined", label: "Card Declined" },
+        { value: "expiredCard", label: "Expired Card" },
+        { value: "cardNotSupported", label: "Card Not Supported" },
+        { value: "transactionFailed", label: "Transaction Failed" },
+        // Add more payment-related options here
+      ]);
+      break;
+    case "login":
+      setSpecificErrorOptions([
+        { value: "wrongPassword", label: "Wrong Password" },
+        { value: "accountLocked", label: "Account Locked" },
+        { value: "emailNotVerified", label: "Email Not Verified" },
+        { value: "accountNotFound", label: "Account Not Found" },
+        { value: "passwordResetRequired", label: "Password Reset Required" },
+        // Add more login-related options here
+      ]);
+      break;
+    case "register":
+      setSpecificErrorOptions([
+        { value: "emailAlreadyInUse", label: "Email Already In Use" },
+        { value: "usernameAlreadyTaken", label: "Username Already Taken" },
+        { value: "invalidEmailFormat", label: "Invalid Email Format" },
+        { value: "passwordTooWeak", label: "Password Too Weak" },
+        { value: "termsNotAccepted", label: "Terms Not Accepted" },
+        // Add more register-related options here
+      ]);
+      break;
+    case "parking":
+      setSpecificErrorOptions([
+        { value: "expiredTicket", label: "Expired Ticket" },
+        { value: "invalidLocation", label: "Invalid Location" },
+        { value: "noParkingZone", label: "No Parking Zone" },
+        { value: "overstayed", label: "Overstayed" },
+        { value: "meterExpired", label: "Meter Expired" },
+        { value: "incorrectPayment", label: "Incorrect Payment" },
+        // Add more parking-related options here
+      ]);
+      break;
+    case "adminReport":
+      setSpecificErrorOptions([
+        { value: "userComplaint", label: "User Complaint" },
+        { value: "systemIssue", label: "System Issue" },
+        { value: "dataInconsistency", label: "Data Inconsistency" },
+        { value: "securityViolation", label: "Security Violation" },
+        { value: "featureRequest", label: "Feature Request" },
+        // Add more admin report-related options here
+      ]);
+      break;
+    case "bugReport":
+      setSpecificErrorOptions([
+        { value: "crashReport", label: "Crash Report" },
+        { value: "performanceIssue", label: "Performance Issue" },
+        { value: "uiGlitch", label: "UI Glitch" },
+        { value: "featureBug", label: "Feature Bug" },
+        { value: "securityFlaw", label: "Security Flaw" },
+        // Add more bug report-related options here
+      ]);
+      break;
+    default:
+      setSpecificErrorOptions([]);
+  }
+};
+
 
  const handleSpecificErrorChange = (e) => {
     setSpecificError(e.target.value);
@@ -92,6 +140,12 @@ const ContactUs = () => {
             <option value="">Select Error Type</option>
             <option value="payment">Payment Error</option>
             <option value="login">Login Error</option>
+            <option value="register">register Error</option>
+
+            <option value="parking">parking Error</option>
+            <option value="adminReport">adminReport Error</option>
+            <option value="bugReport">bugReport Error</option>
+
             {/* Add more error types here */}
           </select>
 

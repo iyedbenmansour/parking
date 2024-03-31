@@ -60,7 +60,7 @@ const Booking = () => {
               onChange={(e) => setCarModel(e.target.value)}
               required
             >
-              <option value="" disabled>Select a car model</option>
+              <option value="" disabled>Select Location</option>
               <option value="Sfax–Thyna International Airport">
                 Sfax–Thyna International Airport
               </option>

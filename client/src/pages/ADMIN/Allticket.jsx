@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios"; // Corrected import statement
+import axios from "axios";
 import Navbar from "../../components/navbar/Navbar";
 import Footer from "../../components/footer/Footer";
 import "./admin.css"; 
@@ -7,7 +7,7 @@ import { FaTrash } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom"; 
 import { jwtDecode } from 'jwt-decode'; 
 
-const Allticket = () => { // Corrected component name
+const Allticket = () => {
  const navigate = useNavigate();
  const [contacts, setContacts] = useState([]);
  const [search, setSearch] = useState(""); // State to hold the search input
@@ -26,28 +26,27 @@ const Allticket = () => { // Corrected component name
  }, []);
  
  const handleDelete = async (contactId) => {
-  try {
+ try {
       await axios.delete(`http://localhost:5000/api/contacts/${contactId}`);
 
       setContacts(contacts.filter((contact) => contact._id !== contactId));
 
       console.log("Contact deleted successfully.");
-  } catch (error) {
+ } catch (error) {
       console.error("Error deleting contact:", error);
       console.error("An error occurred while deleting the contact.");
-  }
+ }
 };
 
- 
- const handleSearch = (event) => {
+const handleSearch = (event) => {
      setSearch(event.target.value);
  };
  
+ // Filter contacts by error type instead of by message
  const filteredContacts = contacts.filter((contact) =>
-     contact.message.toLowerCase().includes(search.toLowerCase())
+     contact.errorType.toLowerCase().includes(search.toLowerCase())
  );
  
- // Assuming you want to reset the search input, define the resetSearch function
  const resetSearch = () => {
     setSearch("");
  };
@@ -56,10 +55,10 @@ const Allticket = () => { // Corrected component name
     <>
       <Navbar />
       <div className="admin-container">
-        <h1 onClick={resetSearch}>Contact</h1> {/* Corrected typo and added resetSearch function */}
+        <h1 onClick={resetSearch}>Contact</h1>
         <input
           type="text"
-          placeholder="Search by Message" // Adjusted placeholder text
+          placeholder="Search by Error Type" // Updated placeholder text
           value={search}
           onChange={handleSearch}
           className="search-bar"
@@ -70,14 +69,14 @@ const Allticket = () => { // Corrected component name
               <li key={index} className="booking-item">
                <p>{contact.errorType}</p>
                <div className="booking-details">
-               <p
+                <p
                       className="email-link "
                       onClick={() => navigate(`/alluser?email=${contact.email}`)}
-                  >
-              Email: {contact.email}</p> {/* Adjusted to match contact object properties */}
-                <p>Error Type: {contact.errorType}</p> {/* Adjusted to match contact object properties */}
-                <p>Specific Error: {contact.specificError}</p> {/* Adjusted to match contact object properties */}
-                <p>Message: {contact.message}</p> {/* Adjusted to match contact object properties */}
+                 >
+              Email: {contact.email}</p>
+                <p>Error Type: {contact.errorType}</p>
+                <p>Specific Error: {contact.specificError}</p>
+                <p>Message: {contact.message}</p>
                 <p>
                  Created At: {new Date(contact.createdAt).toLocaleDateString()}
                 </p>
@@ -98,4 +97,4 @@ const Allticket = () => { // Corrected component name
  );
 };
 
-export default Allticket; // Corrected component name
+export default Allticket;

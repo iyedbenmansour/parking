@@ -17,8 +17,8 @@ const port = process.env.PORT;
 require("./config/parking.config");
 
 app.post("/api/register", async (req, res) => {
-    const {fullname , email, password, phoneNumber, cin } = req.body;
-    const newUser = {fullname , email, password, phoneNumber, cin } ;
+    const {fullname , email, password, phoneNumber, cin ,role  } = req.body;
+    const newUser = {fullname , email, password, phoneNumber, cin , role } ;
 
     console.log(newUser);
     try {
