@@ -107,7 +107,6 @@ function Profile() {
                 <p>Name: {user.fullname}</p>
                 <p>Email: {user.email}</p>
                 <p>Phone Number: {user.phoneNumber}</p>
-                <p> Role: {user.role}</p>
 
                 <button onClick={handleEdit}>Edit Profile</button>
               </div>

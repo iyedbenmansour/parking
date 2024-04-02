@@ -68,3 +68,43 @@
 .plan-box .price-button:hover {
     background-color: #00000050; /* Add a subtle background color on hover */
 }
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .plan-box {
+       width: 100%; /* Make the plan box take up the full width on smaller screens */
+       margin: 10px; /* Reduce margin for smaller screens */
+    }
+   
+    .plan-box h3 {
+       font-size: 18px; /* Adjust font size for smaller screens */
+    }
+   
+    .plan-box p {
+       font-size: 14px; /* Adjust font size for smaller screens */
+    }
+   
+    .plan-box .price-button {
+       padding: 8px 16px; /* Reduce padding for smaller screens */
+       border-radius: 30px; /* Adjust border radius for smaller screens */
+    }
+   }
+   
+   @media (max-width: 480px) {
+    .plan-box {
+       padding: 20px; /* Increase padding for even smaller screens */
+    }
+   
+    .plan-box h3 {
+       font-size: 16px; /* Further adjust font size for very small screens */
+    }
+   
+    .plan-box p {
+       font-size: 12px; /* Further adjust font size for very small screens */
+    }
+   
+    .plan-box .price-button {
+       padding: 6px 12px; /* Further reduce padding for very small screens */
+       border-radius: 20px; /* Adjust border radius for very small screens */
+    }
+   }

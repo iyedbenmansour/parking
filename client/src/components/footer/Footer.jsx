@@ -19,8 +19,6 @@ const Footer = () => {
             <h4>get help</h4>
             <ul>
               <li><a href="#">FAQ</a></li>
-              <li><a href="#">shipping</a></li>
-              <li><a href="#">returns</a></li>
               <li><a href="#">order status</a></li>
               <li><a href="#">payment options</a></li>
             </ul>
@@ -35,7 +33,7 @@ const Footer = () => {
             </ul>
           </div>
           <div className="footer-col">
-            <h4>follow us</h4>
+            <h4>Contact us</h4>
             <div className="social-links">
               <a href="#"><i className="fab fa-facebook-f"></i></a>
               <a href="#"><i className="fab fa-twitter"></i></a>

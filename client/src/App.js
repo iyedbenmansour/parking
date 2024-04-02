@@ -11,18 +11,22 @@ import ContactUs from "./pages/USER/ContactUs";
 import Cattegory from "./pages/USER/Cattegory";
 import Payment from "./pages/USER/Payment";
 import Profile from "./pages/USER/profile/Profile";
-import EditP from "./pages/USER/profile/EditP";
+import EditP from "./pages/USER/EditP";
 import AllBook from "./pages/ADMIN/AllBook";
 import AllUser from "./pages/ADMIN/AllUser";
 import Alladmins from "./pages/ADMIN/Alladmin";
 import Allticket from "./pages/ADMIN/Allticket";
 import Admin from "./pages/ADMIN/Admin";
 import Addadmin from "./pages/USER/Addadmin";
+import Empty from "./pages/USER/Empty";
+import Help from "./pages/USER/Help";
 function App() {
   return (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home/>}/>
+          <Route path="/empty" element={<Empty/>}/>
+          <Route path="/help" element={<Help/>}/>
           <Route path="/booking" element={<Booking/>}/>
           <Route path="/login" element={<Login/>}/>
           <Route path="/register" element={<Register/>}/>

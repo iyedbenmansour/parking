@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
-import axios from 'axios'; // Import axios
+import axios from 'axios';
+import AlertModal from '../../components/alert/AlertModal';
 import './global.css'; 
 import Navbar from '../../components/navbar/Navbar';
 import Header from '../../components/header/Header';    
@@ -12,6 +13,8 @@ export default function Payment() {
  const [price, setPrice] = useState('');
  const [title, setTitle] = useState('');
  const [userInfo, setUserInfo] = useState({ name: '', email: '' });
+ const [isModalOpen, setIsModalOpen] = useState(false);
+ const [modalMessage, setModalMessage] = useState('');
 
  useEffect(() => {
     const tokenFromStorage = sessionStorage.getItem('token');
@@ -46,7 +49,6 @@ export default function Payment() {
     }
  }, []);
 
- // Updated handleBooking function
  const handleBooking = async (e) => {
     e.preventDefault();
     const newBooking = {
@@ -58,38 +60,47 @@ export default function Payment() {
         title,
         email: userInfo.email,
     };
-    axios.post("http://localhost:5000/api/booking", newBooking)
-    .then(res => console.log(res.data))
-    .catch(err => console.error(err));
-
-    sessionStorage.removeItem('title');
-    sessionStorage.removeItem('booking');
-    sessionStorage.removeItem('email');
-    sessionStorage.removeItem('price');
-    alert("booking done succufully");
-
-    window.location.href = "/booking";
- };
+    try {
+        const res = await axios.post("http://localhost:5000/api/booking", newBooking);
+        console.log(res.data);
+        setModalMessage("Booking done successfully.");
+        setIsModalOpen(true);
+        // Remove items from sessionStorage
+        sessionStorage.removeItem('title');
+        sessionStorage.removeItem('booking');
+        sessionStorage.removeItem('email');
+        sessionStorage.removeItem('price');
+        // Redirect after a delay to allow the modal to be seen
+        setTimeout(() => {
+            window.location.href = "/booking";
+        }, 2000);
+    } catch (err) {
+        console.error(err);
+        setModalMessage("Error processing booking.");
+        setIsModalOpen(true);
+    }
+};
 
  return (
-        <>
+    <>
         <Navbar />
-     <div className="mainContentArea">
-      <div className="bookingForm">
-      <h3>Booking info</h3>
-        <p>Airport parking : {booking.carModel}</p>
-        <p>License Plate: {booking.licensePlate}</p>
-        <p>From: {booking.bookingStartDate}</p>
-        <p>To: {booking.bookingEndDate}</p>
-        <h3>Total cost</h3>
-        <p>Price: {price} dt </p>
-        <p>Zone: {title}</p>
-        <h3>User Information</h3>
-        <p>Email: {userInfo.email}</p>
-        <button className="confirmButton" onClick={handleBooking}>Confirm</button> {/* Updated Confirm Button */}
-      </div>
-    </div>
-    <Footer />
-        </>
+        <div className="mainContentArea">
+            <div className="bookingForm">
+                <h3>Booking info</h3>
+                <p>Airport parking : {booking.carModel}</p>
+                <p>License Plate: {booking.licensePlate}</p>
+                <p>From: {booking.bookingStartDate}</p>
+                <p>To: {booking.bookingEndDate}</p>
+                <h3>Total cost</h3>
+                <p>Price: {price} dt </p>
+                <p>Zone: {title}</p>
+                <h3>User Information</h3>
+                <p>Email: {userInfo.email}</p>
+                <button className="confirmButton" onClick={handleBooking}>Confirm</button>
+            </div>
+        </div>
+        <Footer />
+        <AlertModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} message={modalMessage} />
+    </>
  );
 }
