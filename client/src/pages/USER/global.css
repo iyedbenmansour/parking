@@ -138,6 +138,8 @@
   max-width: 800px; /* Limit the width for better readability */
   margin: 0 auto; /* Center the container */
  }
+
+ 
  
  /* Help Section Styles */
  .help-section {
@@ -148,6 +150,12 @@
   max-width: 100%;
  }
  
+ 
+ .help-section :hover  {
+  color: #00689c;
+   }
+
+
  .help-section h2, .help-section h3 {
   font-size: 2rem; /* Increased heading size for better visibility */
   margin-bottom: 1rem; /* Add spacing below heading */
