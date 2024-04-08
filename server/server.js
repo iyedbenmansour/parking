@@ -153,7 +153,7 @@ app.get("/api/bookings", async (req, res) => {
         res.status(500).json({ message: "Error fetching bookings" });
     }
 });
-
+    
 app.get("/api/allbookings", async (req, res) => {
     console.log("Bookings retrieved"); // Debugging line
     try {
@@ -229,7 +229,6 @@ app.post("/api/contact", async (req, res) => {
 
         // Fetch contacts for the specified email
         const contact = await ContactUsModel.find({ email: email });
-        console.log(`Fetched contacts: ${JSON.stringify(contact)}`); // Debugging line
 
         res.json({
             contact: contact,

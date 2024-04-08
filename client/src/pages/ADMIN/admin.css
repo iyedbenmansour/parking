@@ -93,11 +93,10 @@
   box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 
-/* admin.css */
 
 .email-link {
   color: #000; /* Default text color */
-  cursor: pointer; /* Changes the cursor to a pointer when hovering over the email */
+  cursor:default ; /* Changes the cursor to a pointer when hovering over the email */
  }
  
  .email-link:hover {
@@ -146,14 +145,12 @@
   margin: 0 auto; /* Center the container */
  }
  
- /* Ensure each dashboard component takes up full width */
  .dashboard-container > * {
   flex: 1 1 auto; /* Grow and shrink as needed, with auto width */
   min-width: 300px; /* Ensure each dashboard has a minimum width */
   margin: 10px 0; /* Add some margin around each dashboard */
  }
  
- /* dashboard-content.css */
 
 .dashboard-container {
  display: flex;

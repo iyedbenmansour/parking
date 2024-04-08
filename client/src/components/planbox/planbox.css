@@ -1,7 +1,7 @@
 /* PlanBox.css */
 
 .plan-box {
-    background: linear-gradient(135deg, #055e9e32 0%, #78676725 100%); /* Gradient background */
+    background: linear-gradient(135deg, #055e9e2c 30%, #78676718 70%); /* Gradient background */
     border-radius: 15px; /* Rounded corners */
     padding: 30px; /* Increased padding for better spacing */
     margin: 20px; /* Increased margin for better spacing */
@@ -39,10 +39,7 @@
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Add a subtle text shadow */
 }
 
-/* Ensure the parent container has enough space for the boxes */
-/* PlanBox.css */
 
-/* Existing styles for .plan-box, .plan-box h3, .plan-box p */
 
 .plan-box .price-container {
     display: flex; /* Use flexbox to allow the button to expand */
@@ -66,7 +63,7 @@
 }
 
 .plan-box .price-button:hover {
-    background-color: #00000050; /* Add a subtle background color on hover */
+    background-color: #00000095; /* Add a subtle background color on hover */
 }
 
 /* Responsive styles */

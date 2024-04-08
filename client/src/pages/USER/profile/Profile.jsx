@@ -8,23 +8,24 @@ import Navbar from "../../../components/navbar/Navbar";
 import Footer from "../../../components/footer/Footer";
 
 function Profile() {
- const [bookings, setBookings] = useState([]);
- const [contacts, setContacts] = useState([]);
- const [user, setUser] = useState(null);
+  const [bookings, setBookings] = useState([]);
+  const [contacts, setContacts] = useState([]);
+  const [user, setUser] = useState(null);
 
- const navigate = useNavigate();
+  const navigate = useNavigate();
 
- useEffect(() => {
+  useEffect(() => {
     const token = sessionStorage.getItem("token");
     if (!token) {
       sessionStorage.removeItem("token");
       navigate("/login");
     }
- }, [navigate]);
+  }, [navigate]);
 
- useEffect(() => {
+  useEffect(() => {
     const token = sessionStorage.getItem("token");
-    if (typeof token === 'string') { // Ensure the token is a string
+    if (typeof token === "string") {
+      // Ensure the token is a string
       const decodedToken = jwtDecode(token);
       const email = decodedToken.email;
 
@@ -60,9 +61,9 @@ function Profile() {
     } else {
       console.error("Token is not a string:", token);
     }
- }, []);
+  }, []);
 
- const handleDelete = (bookingId) => {
+  const handleDelete = (bookingId) => {
     axios
       .delete(`http://localhost:5000/api/bookings/${bookingId}`)
       .then((response) => {
@@ -74,9 +75,9 @@ function Profile() {
       .catch((error) => {
         console.error("Error deleting booking:", error);
       });
- };
+  };
 
- const handleDeleteContact = (contactId) => {
+  const handleDeleteContact = (contactId) => {
     axios
       .delete(`http://localhost:5000/api/contacts/${contactId}`)
       .then((response) => {
@@ -88,25 +89,31 @@ function Profile() {
       .catch((error) => {
         console.error("Error deleting contact:", error);
       });
- };
+  };
 
- const handleEdit = () => {
+  const handleEdit = () => {
     navigate("/edit");
- };
+  };
 
- return (
+  return (
     <>
       <Navbar />
-      <p className="welcome">Welcome {user?.fullname }</p>
+      <p className="welcome">Welcome {user?.fullname}</p>
       <div className="containerBox">
         <div className="userinfo">
           <div className="reservation-box">
             {user && (
               <div className="user-data">
                 <h2>Your personal information</h2>
-                <p>Name: {user.fullname}</p>
-                <p>Email: {user.email}</p>
-                <p>Phone Number: {user.phoneNumber}</p>
+                <div className="profiles">
+                  <p>Name: {user.fullname}</p>
+                </div>
+                <div className="profiles">
+                  <p>Email: {user.email}</p>
+                </div>
+                <div className="profiles">
+                  <p>Phone Number: {user.phoneNumber}</p>
+                </div>
 
                 <button onClick={handleEdit}>Edit Profile</button>
               </div>
@@ -119,18 +126,18 @@ function Profile() {
             {bookings.map((booking, index) => (
               <div key={index} className="reservation-box">
                 <FaTrash
-                 className="delete-icon"
-                 onClick={() => handleDelete(booking._id)}
+                  className="delete-icon"
+                  onClick={() => handleDelete(booking._id)}
                 />
                 <p>Car Model: {booking.carModel}</p>
                 <p>License Plate: {booking.licensePlate}</p>
                 <p>
-                 Booking Start Date:{" "}
-                 {new Date(booking.bookingStartDate).toLocaleDateString()}
+                  Booking Start Date:{" "}
+                  {new Date(booking.bookingStartDate).toLocaleDateString()}
                 </p>
                 <p>
-                 Booking End Date:{" "}
-                 {new Date(booking.bookingEndDate).toLocaleDateString()}
+                  Booking End Date:{" "}
+                  {new Date(booking.bookingEndDate).toLocaleDateString()}
                 </p>
                 <p>Price: {booking.price}</p>
                 <p>Title: {booking.title}</p>
@@ -143,15 +150,15 @@ function Profile() {
             {contacts.map((contact, index) => (
               <div key={index} className="reservation-box">
                 <FaTrash
-                 className="delete-icon"
-                 onClick={() => handleDeleteContact(contact._id)}
+                  className="delete-icon"
+                  onClick={() => handleDeleteContact(contact._id)}
                 />
                 <p>Email: {contact.email}</p>
                 <p>Error Type: {contact.errorType}</p>
                 <p>Specific Error: {contact.specificError}</p>
                 <p>Message: {contact.message}</p>
                 <p>
-                 Created At: {new Date(contact.createdAt).toLocaleDateString()}
+                  Created At: {new Date(contact.createdAt).toLocaleDateString()}
                 </p>
               </div>
             ))}
@@ -160,7 +167,7 @@ function Profile() {
       </div>
       <Footer />
     </>
- );
+  );
 }
 
 export default Profile;

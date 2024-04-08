@@ -1,183 +1,186 @@
 .welcome {
-    text-align: center; /* Center the text */
-    font-family: 'Roboto', sans-serif; /* Use a modern font family */
-    font-size: 24px; /* Increase the font size */
-    color: #000000; /* Specify the text color */
-    margin-bottom: 20px; /* Add some space below the welcome message */
-    margin-top: 30px; /* Add space above the welcome message */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for depth */
-    transition: color 0.3s ease, text-shadow 0.3s ease; /* Smooth transition for hover */
-    line-height: 1.5; /* Improve readability */
-    font-weight: 500; /* Make the text slightly bolder */
-    letter-spacing: 0.08em; /* Add slight spacing between letters for a more modern look */
-    background-color: #f5f5f5; /* Add a subtle background color for contrast */
-    padding: 10px 20px; /* Add padding for better spacing */
-    border-radius: 5px; /* Add rounded corners for a softer look */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.286); /* Add a subtle box shadow for depth */
-    max-width: 600px; /* Limit the width for better readability on larger screens */
-    margin-left: auto; /* Center the element horizontally */
-    margin-right: auto; /* Center the element horizontally */
+  text-align: center; /* Center the text */
+  font-family: "Roboto", sans-serif; /* Use a modern font family */
+  font-size: 24px; /* Increase the font size */
+  color: #000000; /* Specify the text color */
+  margin-bottom: 20px; /* Add some space below the welcome message */
+  margin-top: 30px; /* Add space above the welcome message */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for depth */
+  transition: color 0.3s ease, text-shadow 0.3s ease; /* Smooth transition for hover */
+  line-height: 1.5; /* Improve readability */
+  font-weight: 500; /* Make the text slightly bolder */
+  letter-spacing: 0.08em; /* Add slight spacing between letters for a more modern look */
+  background-color: #f5f5f5; /* Add a subtle background color for contrast */
+  padding: 10px 20px; /* Add padding for better spacing */
+  border-radius: 5px; /* Add rounded corners for a softer look */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.286); /* Add a subtle box shadow for depth */
+  max-width: 600px; /* Limit the width for better readability on larger screens */
+  margin-left: auto; /* Center the element horizontally */
+  margin-right: auto; /* Center the element horizontally */
 }
 
 .welcome:hover {
-    color: #0071c2; /* Change text color on hover */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.247); /* Increase shadow depth on hover */
-    transform: translateY(-1px); /* Slightly lift the element on hover for a 3D effect */
-    box-shadow: 0 4px 8px #0071c243; /* Increase box shadow depth on hover */
+  color: #0071c2; /* Change text color on hover */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.247); /* Increase shadow depth on hover */
+  transform: translateY(
+    -1px
+  ); /* Slightly lift the element on hover for a 3D effect */
+  box-shadow: 0 4px 8px #0071c243; /* Increase box shadow depth on hover */
 }
 
-
 .containerBox {
-    background-color: #0071c2;
-    width: 80%;
-    height: auto;
-    margin: auto;
-    margin-top: 40px;
-    border-radius: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    color: #ffffff;
+  background-color: #0071c2;
+  width: 80%;
+  height: auto;
+  margin: auto;
+  margin-top: 40px;
+  border-radius: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: #ffffff;
 }
 .containerBox input,
 .containerBox textarea {
-  padding:   0.5rem;
-  border:   1px solid #ccc;
-  border-radius:   5px;
-  font-size:   1rem;
-  width:   100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  width: 100%;
   background-color: #fff;
 }
 
-
 .adjust {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    width: 90%;
-    margin-bottom: 20px;
-    margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 90%;
+  margin-bottom: 20px;
+  margin-top: 20px;
 }
 .userinfo {
-    width: 90%; /* Set width to 90% */
-    padding: 20px;
-    border-radius: 15px;
-    background-color: #ffffff;
-    margin: 20px auto 10px; /* Add 20px margin at the top */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    font-family: Arial, sans-serif;
-    color: #333;
+  width: 90%; /* Set width to 90% */
+  padding: 20px;
+  border-radius: 15px;
+  background-color: #ffffff;
+  margin: 20px auto 10px; /* Add 20px margin at the top */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+  color: #333;
 }
 
-
-.reservations, .profiles {
-    flex: 45%;
-    padding: 20px;
-    border-radius: 15px;
-    background-color: #ffffff;
-    margin: 0 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    font-family: Arial, sans-serif;
-    color: #333;
+.reservations,
+.profiles {
+  flex: 45%;
+  padding: 20px;
+  border-radius: 15px;
+  background-color: #ffffff;
+  margin: 0 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+  color: #333;
+  margin-bottom: 9px;
 }
 
-.profiles p, .reservations p {
-    margin-bottom: 10px;
-    font-size: 16px;
+.profiles p,
+.reservations p {
+  margin-bottom: 10px;
+  font-size: 16px;
 }
 
-.profiles span, .reservations span {
-    display: block;
-    margin-bottom: 20px;
-    font-size: 20px;
-    font-weight: bold;
-    color: #444;
+.profiles span,
+.reservations span {
+  display: block;
+  margin-bottom: 20px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #444;
 }
 
 .tiles {
-    margin-top: 10px;
-    text-decoration: none;
-    color: #000000;
-    font-weight: bolder;
-    font-size: 19px;
-    margin-bottom: 20px;
+  margin-top: 10px;
+  text-decoration: none;
+  color: #000000;
+  font-weight: bolder;
+  font-size: 19px;
+  margin-bottom: 20px;
 }
 
 .reservation-box {
-    background-color: #0071c23e;
-    border-radius: 25px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    position: relative; /* Added to position the delete icon */
+  background-color: #0071c23e;
+  border-radius: 25px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative; /* Added to position the delete icon */
 }
 
 .delete-icon {
-    position: absolute;
-    top: 50%; /* Center vertically */
-    left: 93%; /* Center horizontally */
-    cursor: pointer;
-    color: #000000; /* Make the icon red for visibility */
-    font-size: 24px; /* Increase the size of the icon */
-
+  position: absolute;
+  top: 50%; /* Center vertically */
+  left: 93%; /* Center horizontally */
+  cursor: pointer;
+  color: #000000; /* Make the icon red for visibility */
+  font-size: 24px; /* Increase the size of the icon */
 }
 .delete-icon:hover {
-    color: #b01a1acf; /* Slightly darker red on hover */
-   }
+  color: #b01a1acf; /* Slightly darker red on hover */
+}
 
-.userinfo button{
-    background-color: #0071c2;
-    color: #ffffff;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 20px;
-    transition: background-color 0.3s ease;
+.userinfo button {
+  background-color: #0071c2;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
 }
 
 .userinfo button:hover {
-    background-color: #005699;
+  background-color: #005699;
 }
 
 /* Responsive styles */
 @media (max-width: 768px) {
-    .welcome {
-        font-size: 20px; /* Reduce font size for smaller screens */
-        padding: 10px; /* Reduce padding for smaller screens */
-    }
-    .containerBox {
-        width: 95%;
-        margin-top: 20px;
-    }
+  .welcome {
+    font-size: 20px; /* Reduce font size for smaller screens */
+    padding: 10px; /* Reduce padding for smaller screens */
+  }
+  .containerBox {
+    width: 95%;
+    margin-top: 20px;
+  }
 
-    .adjust {
-        flex-direction: column;
-        align-items: center;
-    }
+  .adjust {
+    flex-direction: column;
+    align-items: center;
+  }
 
-    .reservations, .profiles {
-        flex: 100%;
-        margin: 10px 0;
-    }
+  .reservations,
+  .profiles {
+    flex: 100%;
+    margin: 10px 0;
+  }
 
-    .profiles {
-        order: -1; /* This will make the .profiles section appear first */
-    }
+  .profiles {
+    order: -1; /* This will make the .profiles section appear first */
+  }
 
-    .profiles p, .reservations p {
-        font-size: 14px;
-    }
+  .profiles p,
+  .reservations p {
+    font-size: 14px;
+  }
 
-    .profiles span, .reservations span {
-        font-size: 18px;
-    }
+  .profiles span,
+  .reservations span {
+    font-size: 18px;
+  }
 
-    .tiles {
-        font-size: 16px;
-    }
-
-
+  .tiles {
+    font-size: 16px;
+  }
 }
