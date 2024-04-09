@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
+const { Resend } = require('resend');
 
 app.use(cors());
 app.use(express.json());
@@ -10,37 +11,98 @@ app.use(express.urlencoded({ extended: true }));
 const UserModel = require("./models/userModels");
 const BookingModel = require("./models/bookingModels");
 const ContactUsModel = require("./models/contactusModel");
-
+// Initialize Resend instance
+const resend = new Resend('re_5qBKgAne_NYwNS673AxrbDAQiexxFUZnM ');
 require('dotenv').config();
 const port = process.env.PORT;
 
 require("./config/parking.config");
 
 app.post("/api/register", async (req, res) => {
-    const {fullname , email, password, phoneNumber, cin ,role  } = req.body;
-    const newUser = {fullname , email, password, phoneNumber, cin , role } ;
+    const { fullname, email, password, phoneNumber, cin, role } = req.body;
+    const newUser = { fullname, email, password, phoneNumber, cin, role };
 
     console.log(newUser);
     try {
+        // Create a new user
         const user = await UserModel.create(newUser);
+
+        // Send email
+        const { data, error } = await resend.emails.send({
+            from: 'OACA <onboarding@resend.dev>',
+            to: [email], // Send email to the registered user
+            subject: 'Welcome to Our Platform!',
+            html: `
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Welcome to Our Platform!</title>
+                <style>
+                    body {
+                        font-family: 'Arial', sans-serif;
+                        background-color: #f4f4f4;
+                        margin: 0;
+                        padding: 0;
+                    }
+                    .container {
+                        max-width: 600px;
+                        margin: 20px auto;
+                        padding: 20px;
+                        background-color: #fff;
+                        border-radius: 10px;
+                        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                    }
+                    h1 {
+                        color: #007bff;
+                        text-align: center;
+                    }
+                    p {
+                        margin: 10px 0;
+                        line-height: 1.6;
+                    }
+                    .welcome-message {
+                        font-size: 18px;
+                        margin-bottom: 20px;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <h1>Welcome to Our Platform!</h1>
+                    <p class="welcome-message">Hello <strong>${fullname}</strong>,</p>
+                    <p class="welcome-message">Thank you for joining our platform. Your registration was successful.</p>
+                    <p class="welcome-message">We're excited to have you on board!</p>
+                </div>
+            </body>
+            </html>
+            `,
+                    });
+
+        if (error) {
+            console.error({ error });
+            // Handle email sending error
+        } else {
+            console.log({ data });
+            // Email sent successfully
+        }
+
         res.json({
             user,
-            message: "ok"
+            message: "Registration successful"
         });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: "useer already exists" });
-
+        res.status(500).json({ message: "User already exists" });
     }
 });
 
-// Assuming this is part of your Express app setup
 
 app.delete("/api/users/:id", async (req, res) => {
     const userId = req.params.id;
 
     try {
-        // Assuming UserModel is your Mongoose model for users
         await UserModel.findByIdAndDelete(userId);
         res.status(200).json({ message: "User deleted successfully" });
     } catch (error) {
@@ -117,18 +179,99 @@ app.get('/api/allusers', async (req, res) => {
     }
 });
 
+
+
+// Define a route for booking creation
 app.post("/api/booking", async (req, res) => {
     try {
-        const {email , carModel, licensePlate, bookingStartDate, bookingEndDate , price , title} = req.body;
-        const booking = { email , carModel, licensePlate, bookingStartDate, bookingEndDate ,price, title};
+        const { email, carModel, licensePlate, bookingStartDate, bookingEndDate, price, title } = req.body;
+        const booking = { email, carModel, licensePlate, bookingStartDate, bookingEndDate, price, title };
 
+        // Create a new booking
         const book = await BookingModel.create(booking);
+
+        // Send email
+        const { data, error } = await resend.emails.send({
+            from: 'OACA <onboarding@resend.dev>',
+            to: [email], // Send email to the provided email address
+            subject: 'Booking Confirmation',
+            html: `
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Booking Confirmation</title>
+              <style>
+                body {
+                  font-family: 'Arial', sans-serif;
+                  line-height: 1.6;
+                  background-color: #f9f9f9;
+                  margin: 0;
+                  padding: 0;
+                }
+                .container {
+                  max-width: 600px;
+                  margin: 20px auto;
+                  padding: 20px;
+                  background-color: #fff;
+                  border-radius: 10px;
+                  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                }
+                h1 {
+                  color: #007bff;
+                  text-align: center;
+                }
+                p {
+                  margin: 10px 0;
+                }
+                .details {
+                  border-top: 2px solid #007bff;
+                  padding-top: 20px;
+                }
+                .detail-item {
+                  margin-bottom: 10px;
+                }
+                .detail-label {
+                  font-weight: bold;
+                }
+              </style>
+            </head>
+            <body>
+              <div class="container">
+                <h1>Booking Confirmation</h1>
+                <p>Hello,</p>
+                <p>Your booking for <strong>${carModel}</strong> (${licensePlate}) has been confirmed.</p>
+                <div class="details">
+                  <div class="detail-item">
+                    <span class="detail-label">Start Date:</span> ${bookingStartDate}
+                  </div>
+                  <div class="detail-item">
+                    <span class="detail-label">End Date:</span> ${bookingEndDate}
+                  </div>
+                  <div class="detail-item">
+                    <span class="detail-label">Price:</span> ${price}
+                  </div>
+                </div>
+              </div>
+            </body>
+            </html>
+            `,
+                    });
+
+        if (error) {
+            console.error({ error });
+            // Handle email sending error
+        } else {
+            console.log({ data });
+            // Email sent successfully
+        }
 
         res.json({
             booking: book,
             message: "Booking has been saved"
         });
- 
+
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Error" });
@@ -191,21 +334,100 @@ app.delete("/api/bookings/:id", async (req, res) => {
 
 app.post("/api/contact", async (req, res) => {
     try {
+       const { email, errorType, specificError, message } = req.body;
+
+       // Save contact form data to the database
        const contactUsData = new ContactUsModel({
-         email: req.body.email, 
-         errorType: req.body.errorType,
-         specificError: req.body.specificError,
-         message: req.body.message,
+         email,
+         errorType,
+         specificError,
+         message,
        });
-   
        await contactUsData.save();
+
+       // Send email
+       const { data, error } = await resend.emails.send({
+            from: 'OACA <onboarding@resend.dev>',
+            to: [email], // Send email to the provided email address
+            subject: 'Contact Form Submission Confirmation',
+            html: `
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Contact Form Submission Confirmation</title>
+              <style>
+                body {
+                  font-family: 'Arial', sans-serif;
+                  line-height: 1.6;
+                  background-color: #f9f9f9;
+                  margin: 0;
+                  padding: 0;
+                }
+                .container {
+                  max-width: 600px;
+                  margin: 20px auto;
+                  padding: 20px;
+                  background-color: #fff;
+                  border-radius: 10px;
+                  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                }
+                h1 {
+                  color: #007bff;
+                  text-align: center;
+                }
+                p {
+                  margin: 10px 0;
+                }
+                .details {
+                  border-top: 2px solid #007bff;
+                  padding-top: 20px;
+                }
+                .detail-item {
+                  margin-bottom: 10px;
+                }
+                .detail-label {
+                  font-weight: bold;
+                }
+              </style>
+            </head>
+            <body>
+              <div class="container">
+                <h1>Contact Form Submission Confirmation</h1>
+                <p>Hello,</p>
+                <p>Your message has been received successfully.</p>
+                <div class="details">
+                  <div class="detail-item">
+                    <span class="detail-label">Error Type:</span> ${errorType}
+                  </div>
+                  <div class="detail-item">
+                    <span class="detail-label">Specific Error:</span> ${specificError}
+                  </div>
+                  <div class="detail-item">
+                    <span class="detail-label">Message:</span> ${message}
+                  </div>
+                </div>
+              </div>
+            </body>
+            </html>
+            `,
+        });
+
+        if (error) {
+            console.error({ error });
+            // Handle email sending error
+        } else {
+            console.log({ data });
+            // Email sent successfully
+        }
+
        res.status(201).json({ message: "Contact form submitted successfully." });
     } catch (error) {
        res.status(500).json({ error: "An error occurred while submitting the contact form." });
     }
-   });
-   
- 
+});
+
    
    app.get("/api/contacts", async (req, res) => {
        try {
