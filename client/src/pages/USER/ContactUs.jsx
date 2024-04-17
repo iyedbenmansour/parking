@@ -110,7 +110,7 @@ const ContactUs = () => {
       // Decode the token to get the user's email
       const token = sessionStorage.getItem("token");
       const decodedToken = jwtDecode(token);
-      const userEmail = decodedToken.email; // Assuming the email is stored in the token
+      const userEmail = decodedToken.email; //  email is stored in the token
 
       const response = await axios.post("http://localhost:5000/api/contact", {
         errorType,
