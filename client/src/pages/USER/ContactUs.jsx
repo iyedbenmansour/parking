@@ -5,6 +5,8 @@ import './global.css';
 import Navbar from "../../components/navbar/Navbar";
 import Footer from "../../components/footer/Footer";
 import {jwtDecode} from 'jwt-decode'; // Import jwt-decode
+import AlertModal from "../../components/alert/AlertModal";
+
 
 const ContactUs = () => {
  const navigate = useNavigate();
@@ -12,6 +14,8 @@ const ContactUs = () => {
  const [specificErrorOptions, setSpecificErrorOptions] = useState([]);
  const [specificError, setSpecificError] = useState("");
  const [message, setMessage] = useState("");
+ const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
+ const [modalMessage, setModalMessage] = useState(""); // State for modal message
 
  useEffect(() => {
     const token = sessionStorage.getItem("token");
@@ -116,7 +120,8 @@ const ContactUs = () => {
       });
 
       if (response.status === 201) {
-        alert("Contact form submitted successfully.");
+        setModalMessage("Contact form submitted successfully.");
+        setIsModalOpen(true);
         setErrorType("");
         setSpecificErrorOptions([]);
         setSpecificError("");
@@ -124,8 +129,13 @@ const ContactUs = () => {
       }
     } catch (error) {
       console.error("An error occurred while submitting the contact form.", error);
-      alert("An error occurred while submitting the contact form.");
+      setModalMessage("An error occurred while submitting the contact form.");
+      setIsModalOpen(true);
     }
+ };
+
+ const closeModal = () => {
+    setIsModalOpen(false);
  };
 
  return (
@@ -169,6 +179,8 @@ const ContactUs = () => {
         </form>
       </div>
       <Footer/>
+      <AlertModal isOpen={isModalOpen} onClose={closeModal} message={modalMessage} />
+
     </>
  );
 };
