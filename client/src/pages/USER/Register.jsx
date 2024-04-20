@@ -107,6 +107,7 @@ const Register = () => {
           <input
             type="text"
             id="fullname"
+            placeholder="user full name"
             value={fullname}
             onChange={(e) => setFullName(e.target.value)}
             required
@@ -115,6 +116,7 @@ const Register = () => {
           <input
             type="email"
             id="email"
+            placeholder="user@exemple.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -123,6 +125,7 @@ const Register = () => {
           <input
             type="tel"
             id="phoneNumber"
+            placeholder="8 degits "
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
             required
@@ -131,6 +134,7 @@ const Register = () => {
           <input
             type="password"
             id="password"
+            placeholder="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -139,6 +143,7 @@ const Register = () => {
           <input
             type="text"
             id="licensePlate"
+            placeholder="CIN"
             value={cin}
             onChange={(e) => setCin(e.target.value)}
             required

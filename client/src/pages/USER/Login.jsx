@@ -61,6 +61,7 @@ const Login = () => {
           <input
             type="text"
             id="email"
+            placeholder="user@exemple.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -70,13 +71,14 @@ const Login = () => {
           <input
             type="password"
             id="password"
+            placeholder="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
 
           <button type="submit">Log In</button>
-          <a href="/forgot-password">Forgot Password?</a>
+          <a href="/register">create an account </a>
         </form>
       </div>
       <Footer />

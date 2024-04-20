@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Navbar from '../../components/navbar/Navbar';
+import Header from '../../components/header/Header';
+import Footer from '../../components/footer/Footer';
 
 export default function EditP() {
  const [fullName, setFullName] = useState('');
@@ -30,6 +33,9 @@ export default function EditP() {
  };
 
  return (
+  <>
+  <Navbar/>
+  <Header type={"list"}/>
     <div className="containerBox">
       <h2>Edit Profile</h2>
       <form onSubmit={handleEdit}>
@@ -48,5 +54,7 @@ export default function EditP() {
         <button type="submit">Save Changes</button>
       </form>
     </div>
+    <Footer/>
+    </>
  );
 }

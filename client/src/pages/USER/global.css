@@ -186,6 +186,13 @@
   color: #0056b3; /* Adjust link hover color */
   text-decoration: underline; /* Add underline on hover */
  }
+.qrCodeContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%; /* Adjust this value based on your layout needs */
+ }
+ 
  
  /* Responsive Design */
  @media (max-width: 768px) {

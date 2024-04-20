@@ -181,96 +181,92 @@ app.get('/api/allusers', async (req, res) => {
 
 
 
+const qrcode = require('qrcode');
+
 // Define a route for booking creation
 app.post("/api/booking", async (req, res) => {
     try {
         const { email, carModel, licensePlate, bookingStartDate, bookingEndDate, price, title } = req.body;
-        const booking = { email, carModel, licensePlate, bookingStartDate, bookingEndDate, price, title };
+        const bookingInfo = `Airport parking: ${carModel}\nLicense Plate: ${licensePlate}\nFrom: ${bookingStartDate}\nTo: ${bookingEndDate}\nTotal cost: ${price} dt\nZone: ${title}\nEmail: ${email}`;
 
-        // Create a new booking
-        const book = await BookingModel.create(booking);
+        // Generate QR code
+        let qrCodeDataURL;
+        try {
+            qrCodeDataURL = await qrcode.toDataURL(bookingInfo);
+        } catch (err) {
+            console.error('Error generating QR code:', err);
+            return res.status(500).json({ message: "Error generating QR code" });
+        }
+
+        // Prepare the booking object without the QR code
+        const booking = {
+            email,
+            carModel,
+            licensePlate,
+            bookingStartDate,
+            bookingEndDate,
+            price,
+            title,
+            
+        };
+
+        // Create a new booking in the database
+        const newBooking = await BookingModel.create(booking);
+
+        // Prepare the email content with the QR code
+        const emailContent = `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Booking Confirmation</title>
+          <style>
+            /* Your existing styles */
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <h1>Booking Confirmation</h1>
+            <p>Hello,</p>
+            <p>Your booking for <strong>${carModel}</strong> (${licensePlate}) has been confirmed.</p>
+            <div class="details">
+              <div class="detail-item">
+                <span class="detail-label">Start Date:</span> ${bookingStartDate}
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">End Date:</span> ${bookingEndDate}
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Price:</span> ${price}
+              </div>
+            </div>
+            <p>Scan the QR code below to view your booking details:</p>
+            <img src="${qrCodeDataURL}" alt="QR Code" />
+          </div>
+        </body>
+        </html>
+        `;
 
         // Send email
         const { data, error } = await resend.emails.send({
             from: 'OACA <onboarding@resend.dev>',
             to: [email], // Send email to the provided email address
             subject: 'Booking Confirmation',
-            html: `
-            <!DOCTYPE html>
-            <html lang="en">
-            <head>
-              <meta charset="UTF-8">
-              <meta name="viewport" content="width=device-width, initial-scale=1.0">
-              <title>Booking Confirmation</title>
-              <style>
-                body {
-                  font-family: 'Arial', sans-serif;
-                  line-height: 1.6;
-                  background-color: #f9f9f9;
-                  margin: 0;
-                  padding: 0;
-                }
-                .container {
-                  max-width: 600px;
-                  margin: 20px auto;
-                  padding: 20px;
-                  background-color: #fff;
-                  border-radius: 10px;
-                  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                }
-                h1 {
-                  color: #007bff;
-                  text-align: center;
-                }
-                p {
-                  margin: 10px 0;
-                }
-                .details {
-                  border-top: 2px solid #007bff;
-                  padding-top: 20px;
-                }
-                .detail-item {
-                  margin-bottom: 10px;
-                }
-                .detail-label {
-                  font-weight: bold;
-                }
-              </style>
-            </head>
-            <body>
-              <div class="container">
-                <h1>Booking Confirmation</h1>
-                <p>Hello,</p>
-                <p>Your booking for <strong>${carModel}</strong> (${licensePlate}) has been confirmed.</p>
-                <div class="details">
-                  <div class="detail-item">
-                    <span class="detail-label">Start Date:</span> ${bookingStartDate}
-                  </div>
-                  <div class="detail-item">
-                    <span class="detail-label">End Date:</span> ${bookingEndDate}
-                  </div>
-                  <div class="detail-item">
-                    <span class="detail-label">Price:</span> ${price}
-                  </div>
-                </div>
-              </div>
-            </body>
-            </html>
-            `,
-                    });
+            html: emailContent,
+        });
 
         if (error) {
             console.error({ error });
             // Handle email sending error
+            res.status(500).json({ message: "Error sending email" });
         } else {
             console.log({ data });
             // Email sent successfully
+            res.json({
+                message: "Booking confirmation email with QR code has been sent"
+            });
         }
-
-        res.json({
-            booking: book,
-            message: "Booking has been saved"
-        });
 
     } catch (error) {
         console.log(error);

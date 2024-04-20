@@ -173,7 +173,7 @@ const ContactUs = () => {
           )}
 
           <label htmlFor="message">Message:</label>
-          <textarea id="message" name="message" value={message} onChange={handleMessageChange} />
+          <textarea id="message" name="message" value={message} placeholder="Describe your problem here" onChange={handleMessageChange} />
 
           <button type="submit">Submit</button>
         </form>

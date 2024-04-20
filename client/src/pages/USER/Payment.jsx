@@ -1,4 +1,7 @@
+// Payment.jsx
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
+
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 import AlertModal from '../../components/alert/AlertModal';
@@ -6,6 +9,7 @@ import './global.css';
 import Navbar from '../../components/navbar/Navbar';
 import Header from '../../components/header/Header';    
 import Footer from '../../components/footer/Footer';
+import BookingQRCode from '../../components/QRCodeDisplay/QRCodeDisplay';
 
 export default function Payment() {
  const [token, setToken] = useState('');
@@ -15,6 +19,18 @@ export default function Payment() {
  const [userInfo, setUserInfo] = useState({ name: '', email: '' });
  const [isModalOpen, setIsModalOpen] = useState(false);
  const [modalMessage, setModalMessage] = useState('');
+
+ const navigate = useNavigate();
+
+ useEffect(() => {
+  const token = sessionStorage.getItem("token");
+  if (!token) {
+    sessionStorage.removeItem("token");
+    navigate("/login");
+  } else {
+  }
+}, [navigate]);
+
 
  useEffect(() => {
     const tokenFromStorage = sessionStorage.getItem('token');
@@ -81,6 +97,11 @@ export default function Payment() {
     }
 };
 
+// Function to format booking information into a string
+const formatBookingInfo = (booking, price, title, email) => {
+    return `Airport parking: ${booking.carModel}\nLicense Plate: ${booking.licensePlate}\nFrom: ${booking.bookingStartDate}\nTo: ${booking.bookingEndDate}\nTotal cost: ${price} dt\nZone: ${title}\nEmail: ${email}`;
+};
+
  return (
     <>
         <Navbar />
@@ -96,6 +117,11 @@ export default function Payment() {
                 <p>Zone: {title}</p>
                 <h3>User Information</h3>
                 <p>Email: {userInfo.email}</p>
+                <h3>Booking QR Code</h3>
+                <div className="qrCodeContainer">
+
+                <BookingQRCode bookingInfo={formatBookingInfo(booking, price, title, userInfo.email)} />
+                </div>
                 <button className="confirmButton" onClick={handleBooking}>Confirm</button>
             </div>
         </div>

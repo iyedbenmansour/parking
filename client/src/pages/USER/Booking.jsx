@@ -73,6 +73,7 @@ const Booking = () => {
             <input
               type="text"
               id="licensePlate"
+              placeholder="Car number"
               value={licensePlate}
               onChange={(e) => setLicensePlate(e.target.value)}
               required
