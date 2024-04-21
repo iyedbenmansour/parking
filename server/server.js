@@ -183,7 +183,6 @@ app.get('/api/allusers', async (req, res) => {
 
 const qrcode = require('qrcode');
 
-// Define a route for booking creation
 app.post("/api/booking", async (req, res) => {
     try {
         const { email, carModel, licensePlate, bookingStartDate, bookingEndDate, price, title } = req.body;
@@ -207,11 +206,11 @@ app.post("/api/booking", async (req, res) => {
             bookingEndDate,
             price,
             title,
-            
         };
 
-        // Create a new booking in the database
-        const newBooking = await BookingModel.create(booking);
+        // Save booking data to the database
+        const newBooking = new BookingModel(booking);
+        await newBooking.save();
 
         // Prepare the email content with the QR code
         const emailContent = `
@@ -248,24 +247,28 @@ app.post("/api/booking", async (req, res) => {
         </html>
         `;
 
-        // Send email
-        const { data, error } = await resend.emails.send({
-            from: 'OACA <onboarding@resend.dev>',
-            to: [email], // Send email to the provided email address
-            subject: 'Booking Confirmation',
-            html: emailContent,
-        });
-
-        if (error) {
-            console.error({ error });
-            // Handle email sending error
-            res.status(500).json({ message: "Error sending email" });
-        } else {
-            console.log({ data });
-            // Email sent successfully
-            res.json({
-                message: "Booking confirmation email with QR code has been sent"
+        // Attempt to send email
+        try {
+            const { data, error } = await resend.emails.send({
+                from: 'OACA <onboarding@resend.dev>',
+                to: [email], // Send email to the provided email address
+                subject: 'Booking Confirmation',
+                html: emailContent,
             });
+
+            if (error) {
+                console.error({ error });
+                // Handle email sending error
+                res.status(500).json({ message: "Error sending email" });
+            } else {
+                console.log({ data });
+                // Email sent successfully
+                res.status(201).json({ message: "Booking confirmation email with QR code has been sent" });
+            }
+        } catch (emailError) {
+            console.error('Error sending email:', emailError);
+            // If email fails to send, still return success response since booking is saved
+            res.status(201).json({ message: "Booking confirmation email failed to send, but booking is saved" });
         }
 
     } catch (error) {

@@ -66,36 +66,47 @@ export default function Payment() {
  }, []);
 
  const handleBooking = async (e) => {
-    e.preventDefault();
-    const newBooking = {
-        carModel: booking.carModel,
-        licensePlate: booking.licensePlate,
-        bookingStartDate: booking.bookingStartDate,
-        bookingEndDate: booking.bookingEndDate,
-        price,
-        title,
-        email: userInfo.email,
-    };
-    try {
-        const res = await axios.post("http://localhost:5000/api/booking", newBooking);
-        console.log(res.data);
-        setModalMessage("Booking done successfully.");
-        setIsModalOpen(true);
-        // Remove items from sessionStorage
-        sessionStorage.removeItem('title');
-        sessionStorage.removeItem('booking');
-        sessionStorage.removeItem('email');
-        sessionStorage.removeItem('price');
-        // Redirect after a delay to allow the modal to be seen
-        setTimeout(() => {
-            window.location.href = "/booking";
-        }, 2000);
-    } catch (err) {
-        console.error(err);
-        setModalMessage("Error processing booking.");
-        setIsModalOpen(true);
-    }
+  e.preventDefault();
+  const newBooking = {
+      carModel: booking.carModel,
+      licensePlate: booking.licensePlate,
+      bookingStartDate: booking.bookingStartDate,
+      bookingEndDate: booking.bookingEndDate,
+      price,
+      title,
+      email: userInfo.email,
+  };
+  try {
+      const res = await axios.post("http://localhost:5000/api/booking", newBooking);
+      console.log(res.data);
+      // Booking is considered successful at this point
+      setModalMessage("Booking done successfully.");
+      setIsModalOpen(true);
+      // Remove items from sessionStorage
+      sessionStorage.removeItem('title');
+      sessionStorage.removeItem('booking');
+      sessionStorage.removeItem('email');
+      sessionStorage.removeItem('price');
+      // Redirect after a delay to allow the modal to be seen
+      setTimeout(() => {
+          window.location.href = "/booking";
+      }, 2000);
+  } catch (err) {
+      console.error(err);
+      setModalMessage("Booking done successfully, but email not sent.");
+      setIsModalOpen(true);
+      // Remove items from sessionStorage
+      sessionStorage.removeItem('title');
+      sessionStorage.removeItem('booking');
+      sessionStorage.removeItem('email');
+      sessionStorage.removeItem('price');
+      // Redirect after a delay to allow the modal to be seen
+      setTimeout(() => {
+          window.location.href = "/booking";
+      }, 2000);
+  }
 };
+
 
 // Function to format booking information into a string
 const formatBookingInfo = (booking, price, title, email) => {

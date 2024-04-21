@@ -46,14 +46,21 @@ const AllBook = () => {
     fetchBookings();  
  }, []);
 
- const handleDelete = async (bookingId) => {
+const handleDelete = async (bookingId) => {
+ // Ask the user for confirmation
+ const confirmDelete = window.confirm("Are you sure you want to delete this booking?");
+
+ // If the user confirms, proceed with the deletion
+ if (confirmDelete) {
     try {
       await axios.delete(`http://localhost:5000/api/bookings/${bookingId}`);
       setBookings(bookings.filter((booking) => booking._id !== bookingId));
     } catch (error) {
       console.error("Error deleting booking:", error);
     }
- };
+ }
+};
+
 
  const handleSearch = (event) => {
     setSearch(event.target.value);

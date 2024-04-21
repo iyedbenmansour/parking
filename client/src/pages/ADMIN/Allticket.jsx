@@ -26,17 +26,22 @@ const Allticket = () => {
  }, []);
  
  const handleDelete = async (contactId) => {
- try {
-      await axios.delete(`http://localhost:5000/api/contacts/${contactId}`);
-
-      setContacts(contacts.filter((contact) => contact._id !== contactId));
-
-      console.log("Contact deleted successfully.");
- } catch (error) {
-      console.error("Error deleting contact:", error);
-      console.error("An error occurred while deleting the contact.");
- }
-};
+  // Ask the user for confirmation
+  const confirmDelete = window.confirm("Are you sure you want to delete this contact?");
+ 
+  // If the user confirms, proceed with the deletion
+  if (confirmDelete) {
+     try {
+       await axios.delete(`http://localhost:5000/api/contacts/${contactId}`);
+       setContacts(contacts.filter((contact) => contact._id !== contactId));
+       console.log("Contact deleted successfully.");
+     } catch (error) {
+       console.error("Error deleting contact:", error);
+       console.error("An error occurred while deleting the contact.");
+     }
+  }
+ };
+ 
 
 const handleSearch = (event) => {
      setSearch(event.target.value);

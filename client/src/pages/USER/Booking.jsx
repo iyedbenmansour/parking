@@ -85,15 +85,17 @@ const Booking = () => {
               id="bookingStartDate"
               value={bookingStartDate}
               onChange={(e) => setBookingStartDate(e.target.value)}
+              min={new Date().toISOString().split("T")[0]}
               required
             />
-
+  
             <label htmlFor="bookingEndDate">Booking End Date and Time:</label>
             <input
               type="datetime-local"
               id="bookingEndDate"
               value={bookingEndDate}
               onChange={(e) => setBookingEndDate(e.target.value)}
+              min={bookingStartDate}
               required
             />
 

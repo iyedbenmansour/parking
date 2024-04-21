@@ -46,14 +46,20 @@ const AllUsers = () => {
  }, []);
 
  const handleDelete = async (userId) => {
-    try {
-      await axios.delete(`http://localhost:5000/api/users/${userId}`);
-      setUsers(users.filter((user) => user._id !== userId));
-    } catch (error) {
-      console.error("Error deleting user:", error);
-    }
+  // Ask the user for confirmation
+  const confirmDelete = window.confirm("Are you sure you want to delete this user?");
+ 
+  // If the user confirms, proceed with the deletion
+  if (confirmDelete) {
+     try {
+       await axios.delete(`http://localhost:5000/api/users/${userId}`);
+       setUsers(users.filter((user) => user._id !== userId));
+     } catch (error) {
+       console.error("Error deleting user:", error);
+     }
+  }
  };
-
+ 
  const handleSearch = (event) => {
     setSearch(event.target.value);
     setIsSearchActive(true); // Set search as active when typing

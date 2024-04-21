@@ -127,7 +127,13 @@
 .delete-icon:hover {
   color: #b01a1acf; /* Slightly darker red on hover */
 }
+.user-data{
+   
+ font-weight: 700;
+    font-family:Arial, Helvetica, sans-serif ;
+    font-size: 20px;
 
+}
 .userinfo button {
   background-color: #0071c2;
   color: #ffffff;
