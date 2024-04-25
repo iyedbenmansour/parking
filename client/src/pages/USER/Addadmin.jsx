@@ -100,6 +100,7 @@
               id="fullname"
               value={fullname}
               onChange={(e) => setFullName(e.target.value)}
+              placeholder="admin full name"
               required
             />
 
@@ -110,6 +111,7 @@
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              placeholder="admin@exemple.com"
               required
             />
 
@@ -120,6 +122,7 @@
               id="phoneNumber"
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
+              placeholder="8 degits "
               required
             />
 
@@ -129,6 +132,7 @@
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              placeholder="password"
               required
             />
 
@@ -140,6 +144,7 @@
               id="licensePlate"
               value={cin}
               onChange={(e) => setCin(e.target.value)}
+              placeholder="CIN"
               required
             />
 
