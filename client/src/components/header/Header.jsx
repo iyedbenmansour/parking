@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   faCalendarDays,
   faCar,
@@ -15,23 +15,27 @@ import { format } from "date-fns";
 const Header = ({ type }) => {
   const [destination, setDestination] = useState("");
   const [openDate, setOpenDate] = useState(false);
-  const [date, setDate] = useState([
-    {
-      startDate: new Date(),
-      endDate: new Date(),
-      key: "selection",
-    },
-  ]);
-
+  const [dateTime, setDateTime] = useState({
+    startDate: new Date(),
+    endDate: new Date(),
+    startTime: "00:00",
+    endTime: "00:00",
+  });
 
   const navigate = useNavigate();
 
- 
   const handleSearch = () => {
-    navigate("/empty", { state: { destination, date } });
-  };
+    const start = `${format(dateTime.startDate, "MM/dd/yyyy")} ${
+      dateTime.startTime
+    }`;
+    const end = `${format(dateTime.endDate, "MM/dd/yyyy")} ${dateTime.endTime}`;
 
- 
+    // Save to session storage
+    sessionStorage.setItem("start", start);
+    sessionStorage.setItem("end", end);
+
+    navigate("/empty", { state: { destination, start, end } });
+  };
 
   return (
     <div className="header">
@@ -41,12 +45,10 @@ const Header = ({ type }) => {
         }
       >
         <div className="headerList">
-          {/* Update the list items to reflect parking services */}
           <div className="headerListItem active">
             <FontAwesomeIcon icon={faCar} />
             <span>Parking</span>
           </div>
-          {/* Add other parking-related services as needed */}
         </div>
         {type !== "list" && (
           <>
@@ -65,8 +67,13 @@ const Header = ({ type }) => {
                   onChange={(e) => setDestination(e.target.value)}
                 >
                   <option value="">Select an airport ..</option>
-                  <option value="location1"> Sfax–Thyna International Airport</option>
-                  <option value="location2">Djerba Zarzis International Airport</option>
+                  <option value="location1">
+                    {" "}
+                    Sfax–Thyna International Airport
+                  </option>
+                  <option value="location2">
+                    Djerba Zarzis International Airport
+                  </option>
                 </select>
               </div>
               <div className="headerSearchItem">
@@ -74,22 +81,51 @@ const Header = ({ type }) => {
                 <span
                   onClick={() => setOpenDate(!openDate)}
                   className="headerSearchText"
-                >{`${format(date[0].startDate, "MM/dd/yyyy")} to ${format(
-                  date[0].endDate,
+                >{`${format(dateTime.startDate, "MM/dd/yyyy")} to ${format(
+                  dateTime.endDate,
                   "MM/dd/yyyy"
                 )}`}</span>
                 {openDate && (
                   <DateRange
                     editableDateInputs={true}
-                    onChange={(item) => setDate([item.selection])}
+                    onChange={(item) =>
+                      setDateTime({ ...dateTime, ...item.selection })
+                    }
                     moveRangeOnFirstSelection={false}
-                    ranges={date}
+                    ranges={[
+                      {
+                        startDate: dateTime.startDate,
+                        endDate: dateTime.endDate,
+                        key: "selection",
+                      },
+                    ]}
                     className="date"
                     minDate={new Date()}
                   />
                 )}
               </div>
-           
+              <div className="headerSearchItem">
+                <FontAwesomeIcon icon={faCalendarDays} className="headerIcon" />
+                <input
+                  type="time"
+                  value={dateTime.startTime}
+                  onChange={(e) =>
+                    setDateTime({ ...dateTime, startTime: e.target.value })
+                  }
+                  className="headerSearchTime"
+                />
+              </div>
+              <div className="headerSearchItem">
+                <FontAwesomeIcon icon={faCalendarDays} className="headerIcon" />
+                <input
+                  type="time"
+                  value={dateTime.endTime}
+                  onChange={(e) =>
+                    setDateTime({ ...dateTime, endTime: e.target.value })
+                  }
+                  className="headerSearchTime"
+                />
+              </div>
               <div className="headerSearchItem">
                 <button className="headerBtn" onClick={handleSearch}>
                   Search

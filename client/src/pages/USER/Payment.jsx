@@ -93,7 +93,7 @@ export default function Payment() {
       }, 2000);
   } catch (err) {
       console.error(err);
-      setModalMessage("Booking done successfully, but email not sent.");
+      setModalMessage("error");
       setIsModalOpen(true);
       // Remove items from sessionStorage
       sessionStorage.removeItem('title');

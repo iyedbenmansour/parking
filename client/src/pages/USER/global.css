@@ -78,6 +78,27 @@
   margin-bottom: 0.7rem;
   color: #555;
 }
+/* Create Account Link Styles */
+.bookingForm a {
+  text-align: center;
+  color: #007bff; /* Adjust link color */
+  text-decoration: none; /* Remove underline */
+  margin-top: 0.5rem; /* Adjust spacing between login button and link */
+  transition: color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Add transition effect */
+  display: inline-block; /* Ensure block-level behavior */
+  padding: 0.3rem 0.5rem; /* Add padding for better click target */
+  border-radius: 5px; /* Add border-radius for rounded corners */
+}
+
+.bookingForm a:hover {
+  color: #007bff; /* Change link text color on hover */
+  transform: translateY(-2px); /* Move the link slightly upwards on hover */
+  color: #000000; /* Change link text color on hover */
+  font-size: 1.1rem; /* Increase font size on hover */
+  font-weight: bold; /* Increase font weight on hover */
+
+}
+
 
 /* Form Input & Textarea Styles */
 .bookingForm input,
@@ -101,6 +122,7 @@
   margin-top: 1.5rem;
   transition: background-color 0.3s ease;
   font-weight: bold;
+  width: 100%;
 }
 
 .bookingForm button:hover {

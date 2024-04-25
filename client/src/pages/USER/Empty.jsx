@@ -4,16 +4,14 @@ import Footer from "../../components/footer/Footer";
 import PlanBox from "../../components/planbox/Planbox";
 
 export default function Empty() {
-
-
- // Retrieve start and end dates from sessionStorage
- const storedStartDate = sessionStorage.getItem("startDate");
- const storedEndDate = sessionStorage.getItem("endDate");
+ // Retrieve start and end datetime strings from sessionStorage
+ const storedStart = sessionStorage.getItem("start");
+ const storedEnd = sessionStorage.getItem("end");
  let startTime, endTime; // Define these variables outside the if block
 
- if (storedStartDate && storedEndDate) {
-    startTime = new Date(storedStartDate); // Parse the date string into a Date object
-    endTime = new Date(storedEndDate); // Parse the date string into a Date object
+ if (storedStart && storedEnd) {
+    startTime = new Date(storedStart); // Parse the start datetime string into a Date object
+    endTime = new Date(storedEnd); // Parse the end datetime string into a Date object
  }
 
  // Function to calculate price for each zone

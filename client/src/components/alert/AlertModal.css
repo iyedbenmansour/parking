@@ -47,6 +47,8 @@
     font-weight: bold; /* Bold text */
     transition: background-color 0.3s ease; /* Smooth transition for hover effect */
     outline: none; /* Remove default outline */
+    margin-right: 10px; /* Adjust this value as needed */
+
 }
 
 /* Modal Button Hover */

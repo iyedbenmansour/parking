@@ -137,6 +137,142 @@ app.get("/api/user/:email", async (req, res) => {
     }
 });
 
+
+app.put('/api/updateUser/:id', async (req, res) => {
+  try {
+      const { id } = req.params; // Extracting id directly
+      const { fullName, phoneNumber, cin, password, email } = req.body; // Extracting fields from the request body
+
+      // Find the user by id
+      const user = await UserModel.findById(id);
+
+      if (!user) {
+          return res.status(404).json({ message: "User not found" });
+      }
+
+      // Save the current user details before updating
+      const oldFullName = user.fullname;
+      const oldPhoneNumber = user.phoneNumber;
+      const oldCin = user.cin;
+      const oldPassword = user.password;
+      const oldEmail = user.email;
+
+      // Update the user's information
+      user.fullname = fullName;
+      user.phoneNumber = phoneNumber;
+      user.cin = cin;
+      user.password = password;
+      user.email = email;
+      await user.save();
+
+      // Send email notification using resend library
+      const { data, error } = await resend.emails.send({
+          from: 'OACA <onboarding@resend.dev>',
+          to: [oldEmail],
+          subject: 'User Information Updated',
+          html: `
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>User Information Updated</title>
+            <style>
+              body {
+                font-family: 'Arial', sans-serif;
+                line-height: 1.6;
+                background-color: #f9f9f9;
+                margin: 0;
+                padding: 0;
+              }
+              .container {
+                max-width: 600px;
+                margin: 20px auto;
+                padding: 20px;
+                background-color: #fff;
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+              }
+              h1 {
+                color: #007bff;
+                text-align: center;
+              }
+              p {
+                margin: 10px 0;
+              }
+              .details {
+                border-top: 2px solid #007bff;
+                padding-top: 20px;
+              }
+              .detail-item {
+                margin-bottom: 10px;
+              }
+              .detail-label {
+                font-weight: bold;
+              }
+            </style>
+          </head>
+          <body>
+            <div class="container">
+              <h1>User Information Updated</h1>
+              <p>Hello, ${fullName}</p>
+              <p>Your user information has been updated:</p>
+              <div class="details">
+                <div class="detail-item">
+                  <span class="detail-label">Old Full Name:</span> ${oldFullName}
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">New Full Name:</span> ${fullName}
+                </div>
+                <div class="detail-item">
+                <span class="detail-label">Old email:</span> ${oldEmail}
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">New email:</span> ${email}
+              </div>
+                <div class="detail-item">
+                  <span class="detail-label">Old Phone Number:</span> ${oldPhoneNumber}
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">New Phone Number:</span> ${phoneNumber}
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Old Cin:</span> ${oldCin}
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">New Cin:</span> ${cin}
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Old Password:</span> ${oldPassword}
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">New Password:</span> ${password}
+                </div>
+              </div>
+            </div>
+          </body>
+          </html>
+          `
+      });
+
+      if (error) {
+          console.error({ error });
+          // Handle email sending error
+      } else {
+          console.log({ data });
+          // Email sent successfully
+      }
+
+      res.json({
+          message: "User updated successfully"
+      });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Error updating user details" });
+  }
+});
+
+
 app.get('/api/allusers', async (req, res) => {
     try {
        // Fetch all users
@@ -184,98 +320,135 @@ app.get('/api/allusers', async (req, res) => {
 const qrcode = require('qrcode');
 
 app.post("/api/booking", async (req, res) => {
-    try {
-        const { email, carModel, licensePlate, bookingStartDate, bookingEndDate, price, title } = req.body;
-        const bookingInfo = `Airport parking: ${carModel}\nLicense Plate: ${licensePlate}\nFrom: ${bookingStartDate}\nTo: ${bookingEndDate}\nTotal cost: ${price} dt\nZone: ${title}\nEmail: ${email}`;
+  try {
+      const { email, carModel, licensePlate, bookingStartDate, bookingEndDate, price, title } = req.body;
+      const bookingInfo = `Airport parking: ${carModel}\nLicense Plate: ${licensePlate}\nFrom: ${bookingStartDate}\nTo: ${bookingEndDate}\nTotal cost: ${price} dt\nZone: ${title}\nEmail: ${email}`;
 
-        // Generate QR code
-        let qrCodeDataURL;
-        try {
-            qrCodeDataURL = await qrcode.toDataURL(bookingInfo);
-        } catch (err) {
-            console.error('Error generating QR code:', err);
-            return res.status(500).json({ message: "Error generating QR code" });
-        }
+      // Generate QR code
+      let qrCodeDataURL;
+      try {
+          qrCodeDataURL = await qrcode.toDataURL(bookingInfo);
+      } catch (err) {
+          console.error('Error generating QR code:', err);
+          return res.status(500).json({ message: "Error generating QR code" });
+      }
 
-        // Prepare the booking object without the QR code
-        const booking = {
-            email,
-            carModel,
-            licensePlate,
-            bookingStartDate,
-            bookingEndDate,
-            price,
-            title,
-        };
+      // Prepare the booking object without the QR code
+      const booking = {
+          email,
+          carModel,
+          licensePlate,
+          bookingStartDate,
+          bookingEndDate,
+          price,
+          title,
+      };
 
-        // Save booking data to the database
-        const newBooking = new BookingModel(booking);
-        await newBooking.save();
+      // Save booking data to the database
+      const newBooking = new BookingModel(booking);
+      await newBooking.save();
 
-        // Prepare the email content with the QR code
-        const emailContent = `
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Booking Confirmation</title>
-          <style>
-            /* Your existing styles */
-          </style>
-        </head>
-        <body>
-          <div class="container">
-            <h1>Booking Confirmation</h1>
-            <p>Hello,</p>
-            <p>Your booking for <strong>${carModel}</strong> (${licensePlate}) has been confirmed.</p>
-            <div class="details">
-              <div class="detail-item">
-                <span class="detail-label">Start Date:</span> ${bookingStartDate}
-              </div>
-              <div class="detail-item">
-                <span class="detail-label">End Date:</span> ${bookingEndDate}
-              </div>
-              <div class="detail-item">
-                <span class="detail-label">Price:</span> ${price}
-              </div>
+      // Prepare the email content with the QR code
+      const emailContent = `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Booking Confirmation</title>
+        <style>
+          body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+          }
+          .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          }
+          h1 {
+            color: #007bff;
+            text-align: center;
+          }
+          p {
+            margin: 10px 0;
+          }
+          .details {
+            border-top: 2px solid #007bff;
+            padding-top: 20px;
+          }
+          .detail-item {
+            margin-bottom: 10px;
+          }
+          .detail-label {
+            font-weight: bold;
+          }
+          img {
+            display: block;
+            margin: 20px auto;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <h1>Booking Confirmation</h1>
+          <p>Hello <strong> ${email} </strong> </p>
+          <p>Your booking for <strong>${carModel}</strong> (${licensePlate}) has been confirmed.</p>
+          <div class="details">
+            <div class="detail-item">
+              <span class="detail-label">Start Date:</span> ${bookingStartDate}
             </div>
-            <p>Scan the QR code below to view your booking details:</p>
-            <img src="${qrCodeDataURL}" alt="QR Code" />
+            <div class="detail-item">
+              <span class="detail-label">End Date:</span> ${bookingEndDate}
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Price:</span> ${price}
+            </div>
           </div>
-        </body>
-        </html>
-        `;
+          <p>Scan the QR code below to view your booking details:</p>
+          <img src="${qrCodeDataURL}" alt="QR Code" />
+        </div>
+      </body>
+      </html>
+      
+      `;
 
-        // Attempt to send email
-        try {
-            const { data, error } = await resend.emails.send({
-                from: 'OACA <onboarding@resend.dev>',
-                to: [email], // Send email to the provided email address
-                subject: 'Booking Confirmation',
-                html: emailContent,
-            });
+      // Attempt to send email
+      try {
+          const { data, error } = await resend.emails.send({
+              from: 'OACA <onboarding@resend.dev>',
+              to: [email], // Send email to the provided email address
+              subject: 'Booking Confirmation',
+              html: emailContent,
+          });
 
-            if (error) {
-                console.error({ error });
-                // Handle email sending error
-                res.status(500).json({ message: "Error sending email" });
-            } else {
-                console.log({ data });
-                // Email sent successfully
-                res.status(201).json({ message: "Booking confirmation email with QR code has been sent" });
-            }
-        } catch (emailError) {
-            console.error('Error sending email:', emailError);
-            // If email fails to send, still return success response since booking is saved
-            res.status(201).json({ message: "Booking confirmation email failed to send, but booking is saved" });
-        }
+          if (error) {
+              console.error({ error });
+              // Handle email sending error
+          } else {
+              console.log({ data });
+              // Email sent successfully
+          }
+      } catch (emailError) {
+          console.error('Error sending email:', emailError);
+          // If email fails to send, still return success response since booking is saved
+      }
 
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: "Error" });
-    }
+      res.status(201).json({ message: "Booking confirmed successfully" });
+
+  } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Error" });
+  }
 });
+
+
 
 app.get("/api/bookings", async (req, res) => {
     console.log("Bookings retrived"); // Debugging line
@@ -394,7 +567,7 @@ app.post("/api/contact", async (req, res) => {
             <body>
               <div class="container">
                 <h1>Contact Form Submission Confirmation</h1>
-                <p>Hello,</p>
+                <p>Hello <strong> ${email} </strong> </p>
                 <p>Your message has been received successfully.</p>
                 <div class="details">
                   <div class="detail-item">
