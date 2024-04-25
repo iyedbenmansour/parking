@@ -4,7 +4,7 @@ import Navbar from "../../components/navbar/Navbar";
 import Footer from "../../components/footer/Footer";
 import Alertadmin from "../../components/alert/Alertadmin"; // Import Alertadmin
 import { FaTrash } from "react-icons/fa";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom"; // Import Link from react-router-dom
 import { jwtDecode } from 'jwt-decode';
 
 const AllAdmins = () => {
@@ -92,6 +92,8 @@ const AllAdmins = () => {
       <Navbar />
       <div className="admin-container">
         <h1 onClick={resetSearch}>Admins</h1>
+        {/* Add Link to navigate to Addadmin */}
+        <Link to="/addadmin" className="buttons-container ">Add Admin</Link>
         <input
           type="text"
           placeholder="Search by Name or Email"

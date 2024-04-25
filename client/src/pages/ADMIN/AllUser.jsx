@@ -71,11 +71,12 @@ const AllUsers = () => {
 
   const filteredUsers = users.filter(
     (user) =>
+      user.role === 'user' && // Filter only users with role 'user'
       (user.fullname.toLowerCase().includes(search.toLowerCase()) ||
         user.email.toLowerCase().includes(search.toLowerCase())) &&
       (!email || user.email.toLowerCase() === email.toLowerCase())
   );
-
+  
   if (!isAdmin) {
     return null;
   }

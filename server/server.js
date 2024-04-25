@@ -659,5 +659,12 @@ app.post("/api/contact", async (req, res) => {
     }
 });
 
+const secretKey = process.env.SECRET_KEY;
+
+app.get('/getSecretKey', (req, res) => {
+  res.json({ secretKey });
+});
+
+
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

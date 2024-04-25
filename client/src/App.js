@@ -17,9 +17,9 @@ import AllUser from "./pages/ADMIN/AllUser";
 import Alladmins from "./pages/ADMIN/Alladmin";
 import Allticket from "./pages/ADMIN/Allticket";
 import Admin from "./pages/ADMIN/Admin";
-import Addadmin from "./pages/USER/Addadmin";
 import Empty from "./pages/USER/Empty";
 import Help from "./pages/USER/Help";
+import Addadmin from "./pages/USER/Addadmin";
 function App() {
   return (
       <BrowserRouter>

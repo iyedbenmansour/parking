@@ -188,18 +188,22 @@
   gap: 10px;
  }
  
-
  .buttons-container {
-  background-color: #0071c2;
-  color: white;
-  padding:   0.5rem   1rem;
-  border: none;
-  border-radius:   5px;
-  cursor: pointer;
-  margin-top:   1rem;
-  transition: background-color   0.3s ease;
-  font-weight: bold;
+   background-color: #0071c2;
+   color: white;
+   padding: 0.5rem 1rem;
+   border: none;
+   border-radius: 5px;
+   cursor: pointer;
+   margin-top: 1rem;
+   transition: background-color 0.3s ease;
+   font-weight: bold;
+   text-decoration: none; /* Remove underline */
+   display: inline-block; /* Ensure it behaves like a block element */
+   float: right; /* Align the container to the right */
+   margin-bottom: 5px;
  }
+ 
  
  .buttons-container:hover {
   background-color: #005a99;
