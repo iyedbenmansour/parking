@@ -20,6 +20,7 @@ import Admin from "./pages/ADMIN/Admin";
 import Empty from "./pages/USER/Empty";
 import Help from "./pages/USER/Help";
 import Addadmin from "./pages/USER/Addadmin";
+import ForgetPassword from "./pages/USER/ForgetPassword";
 function App() {
   return (
       <BrowserRouter>
@@ -29,6 +30,7 @@ function App() {
           <Route path="/help" element={<Help/>}/>
           <Route path="/booking" element={<Booking/>}/>
           <Route path="/login" element={<Login/>}/>
+          <Route path="/forgetpassword" element={<ForgetPassword/>}/>
           <Route path="/register" element={<Register/>}/>
           <Route path="/contactus" element={<ContactUs/>}/>
           <Route path="/category" element={<Cattegory/>}/>

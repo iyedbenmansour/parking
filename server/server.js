@@ -3,9 +3,20 @@ const app = express();
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const { Resend } = require('resend');
+const session = require('express-session');
 
-app.use(cors());
-app.use(express.json());
+app.use(session({
+  secret: 'your-secret-key', // Replace with your own secret key
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false } // Set to true if you're using HTTPS
+ }));
+
+ app.use(cors({
+  origin: 'http://localhost:3000', // Replace with your frontend origin
+  credentials: true
+ }));
+ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const UserModel = require("./models/userModels");
@@ -663,6 +674,124 @@ const secretKey = process.env.SECRET_KEY;
 
 app.get('/getSecretKey', (req, res) => {
   res.json({ secretKey });
+});
+
+
+app.post('/api/sendVerificationCode', async (req, res) => {
+  const { email } = req.body;
+  try {
+      // Generate a verification code (for simplicity, a random number)
+      const verificationCode = Math.floor(Math.random() * 900000) + 100000;
+      // Store the verification code in the user's session or database temporarily
+        // For simplicity, we'll just store it in the session
+      req.session.verificationCode = verificationCode;
+  
+      // Send the verification code to the user's email using Resend
+      // Assuming the axios.post method handles headers internally
+      const { data, error } = await resend.emails.send({
+       from: 'OACA <onboarding@resend.dev>',
+       to: [email],
+       subject: 'YourAppName - Verification Code',
+       html: `
+         <!DOCTYPE html>
+         <html lang="en">
+         <head>
+             <meta charset="UTF-8">
+             <meta name="viewport" content="width=device-width, initial-scale=1.0">
+             <title>YourAppName - Verification Code</title>
+             <style>
+                 body {
+                     font-family: 'Arial', sans-serif;
+                     background-color: #f4f4f4;
+                     margin: 0;
+                     padding: 0;
+                 }
+                 .container {
+                     max-width: 600px;
+                     margin: 20px auto;
+                     padding: 20px;
+                     background-color: #fff;
+                     border-radius: 10px;
+                     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                 }
+                 h1 {
+                     color: #007bff;
+                     text-align: center;
+                 }
+                 p {
+                     margin: 10px 0;
+                     line-height: 1.6;
+                 }
+                 .verification-code {
+                     font-size: 18px;
+                     margin-bottom: 20px;
+                 }
+             </style>
+         </head>
+         <body>
+             <div class="container">
+                 <h1>YourAppName - Verification Code</h1>
+                 <p class="verification-code">Hello,</p>
+                 <p class="verification-code">Your verification code is: <strong>${verificationCode}</strong></p>
+                 <p class="verification-code">Please use this code to verify your email.</p>
+                 <p class="verification-code">Thank you,</p>
+                 <p class="verification-code">YourAppName Team</p>
+             </div>
+         </body>
+         </html>
+       `,
+      });
+  
+      if (error) {
+        console.error("Error sending verification code:", error);
+        // Ensure the error response is correctly formatted
+        res.status(500).json({ message: "Error sending verification code.", error: error.response.data });
+      } else {
+        console.log("Email sent successfully:", data);
+        res.json({ message: "Verification code sent successfully." });
+      }
+  } catch (error) {
+      console.error("Error sending verification code:", error);
+      // Ensure a generic error response is sent in case of an unexpected error
+      res.status(500).json({ message: "Error sending verification code." });
+  }
+ });
+ 
+ app.post('/api/verifyCode', async (req, res) => {
+  const { email, verificationCode } = req.body;
+  const storedCode = req.session.verificationCode;
+  if (storedCode && storedCode.toString() === verificationCode.toString()) {
+     res.json({ verified: true });
+  } else {
+     res.json({ verified: false });
+  }
+ });
+app.post('/api/checkEmail', async (req, res) => {
+  const { email } = req.body;
+  const user = await UserModel.findOne({ email });
+  res.json({ exists: !!user });
+ });
+
+ app.put('/api/forgetpassword/:email', async (req, res) => {
+  const { email } = req.params;
+  const { password } = req.body;
+
+  try {
+    // Attempt to find the user by email and update their password
+    const user = await UserModel.findOneAndUpdate({ email }, { password }, { new: true });
+
+    // If no user is found with the given email, return a 404 response
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // If the update is successful, return a success message
+    res.json({ message: "Password updated successfully" });
+  } catch (error) {
+    // If an error occurs during the update process, log the error and return a 500 response
+    console.error("Error updating password:", error);
+    res.status(500).json({ message: "Error updating password" });
+  }
 });
 
 
