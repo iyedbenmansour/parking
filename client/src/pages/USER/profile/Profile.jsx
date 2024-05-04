@@ -129,7 +129,7 @@ function Profile() {
                   className="delete-icon"
                   onClick={() => handleDelete(booking._id)}
                 />
-                <p>Car Model: {booking.carModel}</p>
+                <p>Airport : {booking.carModel}</p>
                 <p>License Plate: {booking.licensePlate}</p>
                 <p>
                   Booking Start Date:{" "}

@@ -6,16 +6,13 @@ const { Resend } = require('resend');
 const session = require('express-session');
 
 app.use(session({
-  secret: 'your-secret-key', // Replace with your own secret key
+  secret: 'your-secret-key', 
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: false } // Set to true if you're using HTTPS
+  cookie: { secure: false } 
  }));
 
- app.use(cors({
-  origin: 'http://localhost:3000', // Replace with your frontend origin
-  credentials: true
- }));
+ app.use(cors());
  app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -691,7 +688,7 @@ app.post('/api/sendVerificationCode', async (req, res) => {
       const { data, error } = await resend.emails.send({
        from: 'OACA <onboarding@resend.dev>',
        to: [email],
-       subject: 'YourAppName - Verification Code',
+       subject: 'OACA - Verification Code',
        html: `
          <!DOCTYPE html>
          <html lang="en">
