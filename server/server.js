@@ -19,6 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 const UserModel = require("./models/userModels");
 const BookingModel = require("./models/bookingModels");
 const ContactUsModel = require("./models/contactusModel");
+const Variable = require("./models/variableModels");
 // Initialize Resend instance
 const resend = new Resend('re_5qBKgAne_NYwNS673AxrbDAQiexxFUZnM ');
 require('dotenv').config();
@@ -792,5 +793,94 @@ app.post('/api/checkEmail', async (req, res) => {
 });
 
 
+// Route to handle creating a new Variable document
+app.post('/api/variables', async (req, res) => {
+  try {
+    // Extract data from the request body
+    const { sfaxcap, djcap, ecop, luxp, hadp, sfaxcaplux, sfaxcapeco, sfaxcaphad,djcaplux,djcaphad ,djcapeco} = req.body;
+
+    // Validate the data (simplified example, consider using Mongoose validation)
+    if (!sfaxcap ||!djcap ||!ecop ||!luxp ||!hadp ||!sfaxcaplux ||!sfaxcapeco ||!sfaxcaphad ||!djcaphad  ||!djcapeco ||!djcaplux) {
+      return res.status(400).json({ error: 'All fields are required' });
+    }
+
+    // Create a new Variable document
+    const newVariable = new Variable({
+      sfaxcap,
+      djcap,
+      ecop,
+      luxp,
+      hadp,
+      sfaxcaplux,
+      sfaxcapeco,
+      sfaxcaphad,
+      djcaphad,
+      djcapeco,
+      djcaplux,
+    });
+
+    // Save the new Variable document to the database
+    const savedVariable = await newVariable.save();
+
+    res.status(201).json(savedVariable); // Respond with the saved document
+  } catch (error) {
+    console.error('Error creating variable:', error);
+    res.status(500).json({ error: 'Failed to create variable' });
+  }
+});
+// Route to handle creating or updating a new Variable document
+app.patch('/api/variables', async (req, res) => {
+  try {
+    // Extract data from the request body
+    const { sfaxcap, djcap, ecop, luxp, hadp, sfaxcaplux, sfaxcapeco, sfaxcaphad, djcaphad, djcapeco, djcaplux } = req.body;
+
+  
+
+    // Use a fixed id for the Variable document
+    const fixedId = '663e8a7b6d08256ef51d11a7';
+
+    // Check if the Variable document already exists
+    let variable = await Variable.findOne({ _id: fixedId });
+
+    if (!variable) {
+      // If not found, create a new Variable document
+      variable = new Variable({
+        sfaxcap,
+        djcap,
+        ecop,
+        luxp,
+        hadp,
+        sfaxcaplux,
+        sfaxcapeco,
+        sfaxcaphad,
+        djcaphad,
+        djcapeco,
+        djcaplux,
+        _id: fixedId, // Explicitly set the id to the fixed value
+      });
+    } else {
+      // If found, update the existing Variable document
+      variable.sfaxcap = sfaxcap || variable.sfaxcap;
+      variable.djcap = djcap || variable.djcap;
+      variable.ecop = ecop || variable.ecop;
+      variable.luxp = luxp || variable.luxp;
+      variable.hadp = hadp || variable.hadp;
+      variable.sfaxcaplux = sfaxcaplux || variable.sfaxcaplux;
+      variable.sfaxcapeco = sfaxcapeco || variable.sfaxcapeco;
+      variable.sfaxcaphad = sfaxcaphad || variable.sfaxcaphad;
+      variable.djcaphad = djcaphad || variable.djcaphad;
+      variable.djcapeco = djcapeco || variable.djcapeco;
+      variable.djcaplux = djcaplux || variable.djcaplux;
+    }
+
+    // Save the Variable document to the database
+    const savedVariable = await variable.save();
+
+    res.status(201).json(savedVariable); // Respond with the saved document
+  } catch (error) {
+    console.error('Error creating or updating variable:', error);
+    res.status(500).json({ error: 'Failed to create or update variable' });
+  }
+});
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

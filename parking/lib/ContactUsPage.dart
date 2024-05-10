@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:parking/AlertModal.dart';
-import 'package:parking/LoginPage.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,50 +17,12 @@ class _ContactUsPageState extends State<ContactUsPage> {
   String _message = '';
   bool isModalOpen = false;
   String modalMessage = '';
-  String _email = '';
-  String _modalMessage = '';
 
-  @override
-  void initState() {
-    super.initState();
-    _loadDataFromStorage();
-    _checkLoginStatus();
-  }
-
-  Future<void> _loadDataFromStorage() async {
-    final prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString('token');
-    if (token != null && token.isNotEmpty) {
-      try {
-        final parts = token.split('.');
-        if (parts.length != 3) {
-          throw Exception('Invalid token');
-        }
-        final payload = parts[1];
-        final normalized = base64Url.normalize(payload);
-        final response = utf8.decode(base64Url.decode(normalized));
-        final payloadMap = jsonDecode(response);
-        if (payloadMap is Map<String, dynamic>) {
-          setState(() {
-            _email = payloadMap['email'] ?? 'No email';
-          });
-        }
-      } catch (e) {
-        setState(() {
-          _modalMessage = 'Failed to load data: $e';
-        });
-      }
-    }
-  }
-
-  Future<void> _checkLoginStatus() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString('token');
-    if (token == null) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => LoginPage()),
-      );
-    }
+  void setSpecificErrorOptions(List<String> options) {
+    setState(() {
+      _specificErrorOptions = ['Select Specific Error', ...options];
+      _specificError = 'Select Specific Error';
+    });
   }
 
   Future<void> _handleSubmit() async {
@@ -69,17 +30,19 @@ class _ContactUsPageState extends State<ContactUsPage> {
       _formKey.currentState!.save();
 
       try {
+        final prefs = await SharedPreferences.getInstance();
+        final token = prefs.getString('token');
+        final decodedToken = jsonDecode(token!);
+        final userEmail = decodedToken['email'];
+
         final response = await http.post(
           Uri.parse('http://localhost:5000/api/contact'),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode({
+          body: {
             'errorType': _errorType,
             'specificError': _specificError,
             'message': _message,
-            'email': _email,
-          }),
+            'email': userEmail,
+          },
         );
 
         if (response.statusCode == 201) {
@@ -107,13 +70,6 @@ class _ContactUsPageState extends State<ContactUsPage> {
         });
       }
     }
-  }
-
-  void setSpecificErrorOptions(List<String> options) {
-    setState(() {
-      _specificErrorOptions = ['Select Specific Error', ...options];
-      _specificError = 'Select Specific Error';
-    });
   }
 
   @override
@@ -325,20 +281,6 @@ class _ContactUsPageState extends State<ContactUsPage> {
               message: modalMessage,
               onClose: () => setState(() => isModalOpen = false))
           : null,
-    );
-  }
-
-  Widget _buildModal() {
-    return AlertDialog(
-      title: Text(_modalMessage),
-      actions: <Widget>[
-        TextButton(
-          child: Text('Close'),
-          onPressed: () {
-            setState(() {});
-          },
-        ),
-      ],
     );
   }
 }

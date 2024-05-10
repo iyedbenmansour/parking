@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:parking/CategoryPage.dart';
 import 'package:parking/LoginPage.dart';
-import 'package:shared_preferences/shared_preferences.dart'; // Ensure this import path is correct
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BookingPage extends StatefulWidget {
   final DateTime? startDate;
@@ -40,50 +40,9 @@ class _BookingPageState extends State<BookingPage> {
     }
   }
 
-  Future<void> _selectDate(BuildContext context, bool isStart) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate:
-          isStart ? startDate ?? DateTime.now() : endDate ?? DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-    );
-    if (picked != null) {
-      setState(() {
-        if (isStart) {
-          startDate = picked;
-        } else {
-          endDate = picked;
-        }
-      });
-    }
-  }
-
-  Future<void> _selectTime(BuildContext context, bool isStart) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime:
-          isStart ? startTime ?? TimeOfDay.now() : endTime ?? TimeOfDay.now(),
-    );
-    if (picked != null) {
-      setState(() {
-        if (isStart) {
-          startTime = picked;
-        } else {
-          endTime = picked;
-        }
-      });
-    }
-  }
-
   void _bookNow() {
-    if (selectedLocation == null ||
-        licensePlateController.text.isEmpty ||
-        startDate == null ||
-        endDate == null ||
-        startTime == null ||
-        endTime == null) {
-      _showErrorDialog('All fields must be filled!');
+    if (_isFormIncomplete()) {
+      _showErrorDialog('Please fill in all fields!');
       return;
     }
 
@@ -115,6 +74,15 @@ class _BookingPageState extends State<BookingPage> {
     );
   }
 
+  bool _isFormIncomplete() {
+    return selectedLocation == null ||
+        licensePlateController.text.isEmpty ||
+        startDate == null ||
+        endDate == null ||
+        startTime == null ||
+        endTime == null;
+  }
+
   void _showErrorDialog(String message) {
     showDialog(
       context: context,
@@ -138,175 +106,137 @@ class _BookingPageState extends State<BookingPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Booking Page',
+          'Book a Parking Space',
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Color(0xFF4B39EF),
+        backgroundColor: Colors.blue,
       ),
-      body: SingleChildScrollView(
+      body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                labelText: 'Location',
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFF4B39EF)),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFF4B39EF), width: 2.0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFF4B39EF), width: 2.5),
-                ),
-              ),
-              value: selectedLocation,
-              onChanged: (String? newValue) {
-                setState(() {
-                  selectedLocation = newValue;
-                });
-              },
-              items: locations.map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-            ),
+            _buildLocationDropdown(),
             SizedBox(height: 20),
-            TextField(
+            _buildTextField(
+              labelText: 'Enter License Plate',
+              icon: Icons.car_rental,
               controller: licensePlateController,
-              decoration: InputDecoration(
-                labelText: 'License Plate',
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFF4B39EF)),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFF4B39EF), width: 2.0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xFF4B39EF), width: 2.5),
-                ),
-              ),
             ),
             SizedBox(height: 20),
-            InkWell(
-              onTap: () => _selectDate(context, true),
-              child: InputDecorator(
-                decoration: InputDecoration(
-                  labelText: 'Start Date',
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFF4B39EF)),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Color(0xFF4B39EF), width: 2.0),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Color(0xFF4B39EF), width: 2.5),
-                  ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(startDate?.toString().split(' ')[0] ?? 'Not selected'),
-                    Icon(Icons.calendar_today),
-                  ],
-                ),
-              ),
+            _buildDateTimeSelector(
+              icon: Icons.date_range,
+              label: 'Start Date',
+              onSelect: (date) => startDate = date,
             ),
             SizedBox(height: 20),
-            InkWell(
-              onTap: () => _selectDate(context, false),
-              child: InputDecorator(
-                decoration: InputDecoration(
-                  labelText: 'End Date',
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFF4B39EF)),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Color(0xFF4B39EF), width: 2.0),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Color(0xFF4B39EF), width: 2.5),
-                  ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(endDate?.toString().split(' ')[0] ?? 'Not selected'),
-                    Icon(Icons.calendar_today),
-                  ],
-                ),
-              ),
+            _buildDateTimeSelector(
+              icon: Icons.date_range,
+              label: 'End Date',
+              onSelect: (date) => endDate = date,
             ),
             SizedBox(height: 20),
-            InkWell(
-              onTap: () => _selectTime(context, true),
-              child: InputDecorator(
-                decoration: InputDecoration(
-                  labelText: 'Start Time',
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFF4B39EF)),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Color(0xFF4B39EF), width: 2.0),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Color(0xFF4B39EF), width: 2.5),
-                  ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(startTime?.format(context) ?? 'Not selected'),
-                    Icon(Icons.access_time),
-                  ],
-                ),
-              ),
+            _buildDateTimeSelector(
+              icon: Icons.access_time,
+              label: 'Start Time',
+              isTimePicker: true,
+              onSelect: (time) => startTime = time,
             ),
             SizedBox(height: 20),
-            InkWell(
-              onTap: () => _selectTime(context, false),
-              child: InputDecorator(
-                decoration: InputDecoration(
-                  labelText: 'End Time',
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFF4B39EF)),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Color(0xFF4B39EF), width: 2.0),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: Color(0xFF4B39EF), width: 2.5),
-                  ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(endTime?.format(context) ?? 'Not selected'),
-                    Icon(Icons.access_time),
-                  ],
-                ),
-              ),
+            _buildDateTimeSelector(
+              icon: Icons.access_time,
+              label: 'End Time',
+              isTimePicker: true,
+              onSelect: (time) => endTime = time,
             ),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: _bookNow,
-              child: Text('Book Now!'),
+              child: Text('Book Now', style: TextStyle(fontSize: 18)),
               style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Color(0xFF4B39EF),
+                backgroundColor: Colors.blue,
+                padding: EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLocationDropdown() {
+    return DropdownButtonFormField<String>(
+      value: selectedLocation,
+      onChanged: (String? newValue) {
+        setState(() {
+          selectedLocation = newValue;
+        });
+      },
+      decoration: InputDecoration(
+        labelText: 'Select Location',
+        icon: Icon(Icons.location_on, color: Colors.blue),
+        border: OutlineInputBorder(),
+      ),
+      items: locations.map((location) {
+        return DropdownMenuItem<String>(
+          value: location,
+          child: Text(location),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildTextField({
+    required String labelText,
+    required IconData icon,
+    required TextEditingController controller,
+  }) {
+    return TextField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: labelText,
+        icon: Icon(icon, color: Colors.blue),
+        border: OutlineInputBorder(),
+      ),
+    );
+  }
+
+  Widget _buildDateTimeSelector({
+    required IconData icon,
+    required String label,
+    required Function(dynamic) onSelect,
+    bool isTimePicker = false,
+  }) {
+    return ElevatedButton.icon(
+      onPressed: () async {
+        dynamic selectedValue;
+        if (isTimePicker) {
+          selectedValue = await showTimePicker(
+            context: context,
+            initialTime: TimeOfDay.now(),
+          );
+        } else {
+          selectedValue = await showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2000),
+            lastDate: DateTime(2100),
+          );
+        }
+        if (selectedValue != null) {
+          onSelect(selectedValue);
+        }
+      },
+      icon: Icon(icon),
+      label: Text(label),
+      style: ElevatedButton.styleFrom(
+        foregroundColor: Colors.white, backgroundColor: Colors.blue,
+        padding: EdgeInsets.symmetric(vertical: 16),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
         ),
       ),
     );

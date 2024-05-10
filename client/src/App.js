@@ -21,6 +21,9 @@ import Empty from "./pages/USER/Empty";
 import Help from "./pages/USER/Help";
 import Addadmin from "./pages/USER/Addadmin";
 import ForgetPassword from "./pages/USER/ForgetPassword";
+
+import BookingCalculator from "./pages/USER/BookingCalculator";
+import Variable from "./pages/USER/Varibales";
 function App() {
   return (
       <BrowserRouter>
@@ -43,6 +46,10 @@ function App() {
           <Route path="/allticket" element={<Allticket/>}/>
           <Route path="/admin" element={<Admin/>}/>
           <Route path="/addadmin" element={<Addadmin/>}/>
+
+          <Route path="/bo" element={<BookingCalculator/>}/>
+          <Route path="/var" element={<Variable/>}/>
+
         </Routes>
       </BrowserRouter>
   );

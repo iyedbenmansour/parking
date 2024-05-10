@@ -39,9 +39,9 @@ class _CategoryPageState extends State<CategoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    final ecoPrice = calculatePrice(1.1); // $3 per hour
-    final luxPrice = calculatePrice(2.2); // $10 per hour
-    final handPrice = calculatePrice(0.6); // $5 per hour
+    final ecoPrice = calculatePrice(3.0); // $3 per hour
+    final luxPrice = calculatePrice(10.0); // $10 per hour
+    final handPrice = calculatePrice(5.0); // $5 per hour
 
     return Scaffold(
       backgroundColor: Colors.white, // Set the background color to white
