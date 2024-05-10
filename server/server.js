@@ -828,6 +828,8 @@ app.post('/api/variables', async (req, res) => {
     res.status(500).json({ error: 'Failed to create variable' });
   }
 });
+
+
 // Route to handle creating or updating a new Variable document
 app.patch('/api/variables', async (req, res) => {
   try {
@@ -882,5 +884,27 @@ app.patch('/api/variables', async (req, res) => {
     res.status(500).json({ error: 'Failed to create or update variable' });
   }
 });
+
+app.get('/api/variables', async (req, res) => {
+  try {
+    // Extract the fixed ID from the request parameters
+    const fixedId = '663e8a7b6d08256ef51d11a7';
+
+    // Find the Variable document by the fixed ID
+    const variable = await Variable.findOne({ _id: fixedId });
+
+    if (!variable) {
+      // If not found, respond with an appropriate message
+      return res.status(404).json({ error: 'Variable not found' });
+    }
+
+    // Respond with the found Variable document
+    res.status(200).json(variable);
+  } catch (error) {
+    console.error('Error fetching variable:', error);
+    res.status(500).json({ error: 'Failed to fetch variable' });
+  }
+});
+
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
