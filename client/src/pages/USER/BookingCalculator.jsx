@@ -69,7 +69,7 @@ const BookingCalculator = () => {
       <Header type="list" />
       <div className="mainContentArea">
         <div className="bookingForm">
-          <h2>Booking Counts by Airport and Zone</h2>
+          <h2>live Booking Counts by Airport and Zone</h2>
           {carModelData.map(({ carModel, counts, total }, index) => (
             <div key={index} className="carModelSection">
               <h3>{carModel}</h3>
