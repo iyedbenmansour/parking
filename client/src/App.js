@@ -22,7 +22,7 @@ import Help from "./pages/USER/Help";
 import Addadmin from "./pages/USER/Addadmin";
 import ForgetPassword from "./pages/USER/ForgetPassword";
 
-import BookingCalculator from "./pages/USER/BookingCalculator";
+import BookingCalculator from "./pages/ADMIN/BookingCalculator";
 import Variable from "./pages/USER/Varibales";
 function App() {
   return (
