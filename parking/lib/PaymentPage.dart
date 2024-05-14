@@ -69,6 +69,31 @@ class _PaymentPageState extends State<PaymentPage> {
   }
 
   Future<void> _handleBooking() async {
+    // First, decrement the capacity
+    try {
+      final decrementResponse = await http.post(
+        Uri.parse('http://localhost:5000/api/decrement-capacity'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({
+          'location': widget.selectedLocation,
+          'category': widget.title, // Assuming 'title' holds the category info
+        }),
+      );
+
+      if (decrementResponse.statusCode != 200) {
+        throw Exception('Failed to decrement capacity');
+      }
+    } catch (err) {
+      setState(() {
+        _modalMessage = "Error updating capacity: $err";
+        _isModalOpen = true;
+      });
+      return; // Stop further execution if capacity update fails
+    }
+
+    // Proceed with booking if capacity decrement is successful
     final newBooking = {
       'carModel': widget.selectedLocation,
       'licensePlate': widget.licensePlate,
@@ -80,7 +105,7 @@ class _PaymentPageState extends State<PaymentPage> {
     };
 
     try {
-      final response = await http.post(
+      final bookingResponse = await http.post(
         Uri.parse('http://localhost:5000/api/booking'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -88,17 +113,33 @@ class _PaymentPageState extends State<PaymentPage> {
         body: jsonEncode(newBooking),
       );
 
-      if (response.statusCode == 200) {
-        setState(() {
-          _modalMessage = "Booking done successfully.";
-          _isModalOpen = true;
-        });
-        Future.delayed(Duration(seconds: 2), () {
-          Navigator.pushNamed(context, '/booking');
-        });
-      } else {
+      if (bookingResponse.statusCode != 200) {
         throw Exception('Failed to book');
       }
+
+      // After successful booking, archive the booking data
+      final archiveResponse = await http.post(
+        Uri.parse(
+            'http://localhost:5000/api/archive'), // Adjust the URL as needed
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(newBooking),
+      );
+
+      if (archiveResponse.statusCode != 201) {
+        throw Exception('Failed to archive booking');
+      }
+
+      setState(() {
+        _modalMessage = "Booking and archiving done successfully.";
+        _isModalOpen = true;
+      });
+
+      // Optionally navigate or perform other actions
+      Future.delayed(Duration(seconds: 2), () {
+        Navigator.pushNamed(context, '/booking');
+      });
     } catch (err) {
       setState(() {
         _modalMessage = "Error processing booking: $err";
@@ -111,7 +152,7 @@ class _PaymentPageState extends State<PaymentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Payment'),
+        title: Text('Payment', style: TextStyle(color: Colors.white)),
         backgroundColor: Color(0xFF4b39ef),
         elevation: 0,
       ),

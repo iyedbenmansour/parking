@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
 import 'package:parking/AlertModal.dart'; // Ensure this is the correct path
 
 class RegisterPage extends StatefulWidget {
@@ -31,7 +30,7 @@ class _RegisterPageState extends State<RegisterPage> {
       'password': password,
       'phoneNumber': phoneNumber,
       'cin': cin,
-      'role': 'user', // Assuming 'role' is required and static for this example
+      'role': 'user',
     };
 
     try {
@@ -78,9 +77,10 @@ class _RegisterPageState extends State<RegisterPage> {
               child: Container(
                 padding: EdgeInsets.all(20.0),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.8),
+                  color: Color.fromARGB(255, 215, 212, 212),
                   borderRadius: BorderRadius.circular(10.0),
-                  border: Border.all(color: Color(0xFF4b39ef), width: 2.0),
+                  border: Border.all(
+                      color: Color.fromARGB(255, 0, 0, 0), width: 2.0),
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -113,6 +113,17 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       ),
                     ),
+                    SizedBox(height: 20),
+                    TextButton(
+                      onPressed: () =>
+                          Navigator.pushReplacementNamed(context, '/login'),
+                      child: Text('Already have an account?',
+                          style: TextStyle(color: Color(0xFF4b39ef))),
+                      style: ButtonStyle(
+                        foregroundColor:
+                            MaterialStateProperty.all(Color(0xFF4b39ef)),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -123,8 +134,7 @@ class _RegisterPageState extends State<RegisterPage> {
       bottomSheet: isAlertOpen
           ? AlertModal(
               message: alertMessage,
-              onClose: () => setState(() => isAlertOpen = false),
-            )
+              onClose: () => setState(() => isAlertOpen = false))
           : null,
     );
   }
@@ -137,9 +147,11 @@ class _RegisterPageState extends State<RegisterPage> {
       decoration: InputDecoration(
         labelText: label,
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Color(0xFF4b39ef), width: 2.0),
+          borderSide: BorderSide(color: Colors.black, width: 2.0),
         ),
-        border: OutlineInputBorder(),
+        border: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.black, width: 2.0),
+        ),
         fillColor: Colors.white,
         filled: true,
         prefixIcon: Icon(icon),

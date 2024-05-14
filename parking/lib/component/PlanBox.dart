@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:parking/PaymentPage.dart'; // Ensure this import path is correct
-import 'package:shared_preferences/shared_preferences.dart';
 
 class PlanBox extends StatefulWidget {
   final String title;
@@ -13,6 +12,7 @@ class PlanBox extends StatefulWidget {
   final DateTime bookingEndDate;
 
   PlanBox({
+    Key? key,
     required this.title,
     required this.description,
     required this.price,
@@ -21,31 +21,22 @@ class PlanBox extends StatefulWidget {
     required this.licensePlate,
     required this.bookingStartDate,
     required this.bookingEndDate,
-  });
+  }) : super(key: key);
 
   @override
   _PlanBoxState createState() => _PlanBoxState();
 }
 
 class _PlanBoxState extends State<PlanBox> {
-  String _modalMessage = '';
 
   void _handleClick() async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString('title', widget.title);
-    prefs.setString('price', widget.price.toStringAsFixed(2));
-
-    setState(() {
-      _modalMessage =
-          'Price ${widget.price.toStringAsFixed(2)} will be your total price for ${widget.title}';
-    });
-
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Confirmation'),
-          content: Text(_modalMessage),
+          content: Text(
+              'dt${widget.price.toStringAsFixed(2)} will be your total price for ${widget.title}'),
           actions: <Widget>[
             TextButton(
               child: Text('Close'),
@@ -94,7 +85,7 @@ class _PlanBoxState extends State<PlanBox> {
               SizedBox(height: 10),
               Text(widget.description, style: TextStyle(fontSize: 16)),
               SizedBox(height: 20),
-              Text('\$${widget.price.toStringAsFixed(2)}',
+              Text('dt${widget.price.toStringAsFixed(2)}',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             ],
           ),

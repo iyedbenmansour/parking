@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:parking/ForgetPasswordPage.dart';
 import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart'; // Import SharedPreferences
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:parking/ForgetPasswordPage.dart';
 import 'package:parking/AlertModal.dart';
 
 class LoginPage extends StatefulWidget {
@@ -32,7 +32,6 @@ class _LoginPageState extends State<LoginPage> {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         if (data['user'] != null) {
-          // Store the token
           SharedPreferences prefs = await SharedPreferences.getInstance();
           await prefs.setString(
               'token', data['user']); // Assuming 'user' contains the token
@@ -84,21 +83,31 @@ class _LoginPageState extends State<LoginPage> {
                 child: Container(
                   padding: EdgeInsets.all(20.0),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.8),
+                    color: Color.fromARGB(255, 215, 212,
+                        212), // Set the background color to light grey here
                     borderRadius: BorderRadius.circular(10.0),
-                    border: Border.all(color: Color(0xFF4b39ef), width: 2.0),
+                    border: Border.all(
+                        color: Color.fromARGB(255, 0, 0, 0), width: 2.0),
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      SizedBox(height: 50),
+                      Text("Welcome to Your App",
+                          style: TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.bold)),
+                      SizedBox(height: 10),
+                      Text(
+                          "Creating your account will allow you to find and modify or delete your orders with ease.",
+                          textAlign: TextAlign.center),
+                      SizedBox(height: 30),
                       TextFormField(
                         controller: emailController,
                         decoration: InputDecoration(
                           labelText: 'Email',
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                                color: Color(0xFF4b39ef), width: 2.0),
+                                color: Color.fromARGB(255, 0, 0, 0),
+                                width: 2.0),
                           ),
                           border: OutlineInputBorder(),
                           fillColor: Colors.white,
@@ -114,7 +123,8 @@ class _LoginPageState extends State<LoginPage> {
                           labelText: 'Password',
                           enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                                color: Color(0xFF4b39ef), width: 2.0),
+                                color: Color.fromARGB(255, 10, 10, 10),
+                                width: 2.0),
                           ),
                           border: OutlineInputBorder(),
                           fillColor: Colors.white,
@@ -142,10 +152,9 @@ class _LoginPageState extends State<LoginPage> {
                       TextButton(
                         onPressed: () {
                           Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ForgetPasswordPage()),
-                          );
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ForgetPasswordPage()));
                         },
                         child: Text('Forgot Password?',
                             style: TextStyle(color: Color(0xFF4b39ef))),

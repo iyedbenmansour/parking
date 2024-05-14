@@ -14,9 +14,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Airport Parking Reservation',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
       initialRoute: '/', // Set initial route to HomePage
       routes: {
         '/': (context) => HomePage(), // HomePage as the root route
