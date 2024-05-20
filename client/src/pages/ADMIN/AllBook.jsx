@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "../../components/navbar/Navbar";
 import Footer from "../../components/footer/Footer";
-import Alertadmin from "../../components/alert/Alertadmin";
-import { FaTrash } from "react-icons/fa";
+
 import { useNavigate, useLocation } from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
 
@@ -37,7 +36,7 @@ const AllBook = () => {
     const fetchBookings = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/allbookings"
+          "http://localhost:5000/api/allbookingsarchive"
         );
         setBookings(response.data.bookings.reverse());
       } catch (error) {
@@ -48,20 +47,9 @@ const AllBook = () => {
     fetchBookings();
   }, []);
 
-  const handleDeleteConfirmation = (bookingId) => {
-    setShowConfirmation(true); // Show the confirmation dialog
-    setBookingToDelete(bookingId); // Set the ID of the booking to be deleted
-  };
+  
 
-  const handleDelete = async () => {
-    try {
-      await axios.delete(`http://localhost:5000/api/bookings/${bookingToDelete}`);
-      setBookings(bookings.filter((booking) => booking._id !== bookingToDelete));
-      setShowConfirmation(false); // Hide the confirmation dialog after successful deletion
-    } catch (error) {
-      console.error("Error deleting booking:", error);
-    }
-  };
+ 
 
   const handleSearch = (event) => {
     setSearch(event.target.value);
@@ -118,10 +106,7 @@ const AllBook = () => {
                   <p>Price: {booking.price} dt</p>
                   <p>Title: {booking.title}</p>
                 </div>
-                <FaTrash
-                  className="delete-iconx"
-                  onClick={() => handleDeleteConfirmation(booking._id)} // Open confirmation dialog on click
-                />
+               
               </li>
             ))}
           </ul>
@@ -130,16 +115,7 @@ const AllBook = () => {
         )}
       </div>
       <Footer />
-      {/* Confirmation Dialog */}
-      <Alertadmin
-        isOpen={showConfirmation}
-        onClose={() => setShowConfirmation(false)}
-        primaryLabel="Confirm"
-        primaryOnClick={handleDelete} // Handle deletion on confirmation
-        secondaryLabel="Cancel"
-        secondaryOnClick={() => setShowConfirmation(false)}
-        message="Are you sure you want to delete this booking?"
-      />
+      
     </>
   );
 };

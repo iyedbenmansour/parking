@@ -3,14 +3,17 @@ import axios from 'axios';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 
 export default function Userdash() {
- const [totalUsers, setTotalUsers] = useState(0);
+  const [totalUsers, setTotalUsers] = useState(0);
 
- useEffect(() => {
+  useEffect(() => {
     const fetchData = async () => {
       try {
         // Fetch users
         const usersResponse = await axios.get("http://localhost:5000/api/allusers");
-        const users = usersResponse.data.users;
+        let users = usersResponse.data.users;
+
+        // Filter users to include only those with the role of "user"
+        users = users.filter(user => user.role === 'user');
 
         // Set the total user count
         setTotalUsers(users.length);
@@ -20,17 +23,17 @@ export default function Userdash() {
     };
 
     fetchData();
- }, []);
+  }, []);
 
- // Data for the bar chart
- const data = [
-   {
-     name: 'Total Users',
-     count: totalUsers,
-   },
- ];
+  // Data for the bar chart
+  const data = [
+    {
+      name: 'Total Users',
+      count: totalUsers,
+    },
+  ];
 
- return (
+  return (
     <div>
       <h2>User Dashboard:</h2>
       <p>Total Users: {totalUsers}</p>
@@ -50,5 +53,5 @@ export default function Userdash() {
         <Bar dataKey="count" fill="#8884d8" />
       </BarChart>
     </div>
- );
+  );
 }

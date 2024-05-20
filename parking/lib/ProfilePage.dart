@@ -112,15 +112,36 @@ class _ProfilePageState extends State<ProfilePage>
               children: [
                 Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Welcome ${user['fullname'] ?? ''}',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold)),
-                      Text('Email: ${user['email'] ?? ''}',
-                          style: TextStyle(fontSize: 16)),
-                    ],
+                  child: Card(
+                    elevation: 4.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Welcome ${user['fullname'] ?? ''}',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 8.0),
+                          Text(
+                            'Email: ${user['email'] ?? ''}',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          SizedBox(height: 8.0),
+                          Text(
+                            'Phone Number: ${user['phoneNumber'] ?? ''}',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
                 TabBar(
@@ -150,15 +171,30 @@ class _ProfilePageState extends State<ProfilePage>
   Widget _buildReservationList() {
     return ListView(
       children: bookings
-          .map((booking) => ListTile(
-                title: Text(booking['title'],
-                    style: TextStyle(color: Colors.black87)),
-                subtitle: Text(
-                    'From ${booking['bookingStartDate']} to ${booking['bookingEndDate']}',
-                    style: TextStyle(color: Colors.grey)),
-                trailing: IconButton(
-                  icon: Icon(Icons.delete, color: Colors.red),
-                  onPressed: () => _deleteBooking(booking['_id']),
+          .map((booking) => Card(
+                margin: EdgeInsets.all(10.0),
+                child: ListTile(
+                  contentPadding: EdgeInsets.all(10.0),
+                  title: Text(
+                    booking['title'],
+                    style: TextStyle(color: Colors.black87, fontSize: 18),
+                  ),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Airport: ${booking['carModel']}'),
+                      Text('License Plate: ${booking['licensePlate']}'),
+                      Text(
+                          'Booking Start Date: ${DateTime.parse(booking['bookingStartDate']).toLocal().toString().split(' ')[0]}'),
+                      Text(
+                          'Booking End Date: ${DateTime.parse(booking['bookingEndDate']).toLocal().toString().split(' ')[0]}'),
+                      Text('Price: ${booking['price']}'),
+                    ],
+                  ),
+                  trailing: IconButton(
+                    icon: Icon(Icons.delete, color: Colors.red),
+                    onPressed: () => _deleteBooking(booking['_id']),
+                  ),
                 ),
               ))
           .toList(),
@@ -168,14 +204,28 @@ class _ProfilePageState extends State<ProfilePage>
   Widget _buildContactList() {
     return ListView(
       children: contacts
-          .map((contact) => ListTile(
-                title: Text(contact['message'],
-                    style: TextStyle(color: Colors.black87)),
-                subtitle: Text(contact['createdAt'],
-                    style: TextStyle(color: Colors.grey)),
-                trailing: IconButton(
-                  icon: Icon(Icons.delete, color: Colors.red),
-                  onPressed: () => _deleteContact(contact['_id']),
+          .map((contact) => Card(
+                margin: EdgeInsets.all(10.0),
+                child: ListTile(
+                  contentPadding: EdgeInsets.all(10.0),
+                  title: Text(
+                    contact['message'],
+                    style: TextStyle(color: Colors.black87, fontSize: 18),
+                  ),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Email: ${contact['email']}'),
+                      Text('Error Type: ${contact['errorType']}'),
+                      Text('Specific Error: ${contact['specificError']}'),
+                      Text(
+                          'Created At: ${DateTime.parse(contact['createdAt']).toLocal().toString().split(' ')[0]}'),
+                    ],
+                  ),
+                  trailing: IconButton(
+                    icon: Icon(Icons.delete, color: Colors.red),
+                    onPressed: () => _deleteContact(contact['_id']),
+                  ),
                 ),
               ))
           .toList(),

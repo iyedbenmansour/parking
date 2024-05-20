@@ -3,9 +3,11 @@ import axios from "axios";
 import Navbar from "../../components/navbar/Navbar";
 import Footer from "../../components/footer/Footer";
 import Alertadmin from "../../components/alert/Alertadmin"; // Import Alertadmin
+
 import { FaTrash } from "react-icons/fa";
 import { useNavigate, useLocation, Link } from "react-router-dom"; // Import Link from react-router-dom
-import { jwtDecode } from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode'; 
+
 
 const AllAdmins = () => {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -55,12 +57,36 @@ const AllAdmins = () => {
   };
 
   const handleDelete = async () => {
-    try {
-      await axios.delete(`http://localhost:5000/api/users/${userToDelete}`);
-      setUsers(users.filter((user) => user._id !== userToDelete));
-      setShowConfirmation(false); // Hide the confirmation dialog after successful deletion
-    } catch (error) {
-      console.error("Error deleting user:", error);
+    const adminCode = prompt('Please enter the admin code:');
+
+    if (adminCode) {
+      try {
+        const response = await axios.get('http://localhost:5000/getSecretKey');
+        const { secretKey } = response.data;
+        if (adminCode === secretKey) {
+          const token = sessionStorage.getItem('token');
+          if (token) {
+            const decodedToken = jwtDecode(token);
+            if (decodedToken.role === 'admin') {
+              await axios.delete(`http://localhost:5000/api/users/${userToDelete}`);
+              setUsers(users.filter((user) => user._id !== userToDelete));
+              setShowConfirmation(false); // Hide the confirmation dialog after successful deletion
+            } else {
+              alert('You are not an admin');
+              navigate('/');
+            }
+          } else {
+            alert('No token found. Redirecting...');
+            navigate('/');
+          }
+        } else {
+          alert('Incorrect admin code. Deletion aborted.');
+        }
+      } catch (error) {
+        console.error("Error verifying admin code:", error);
+      }
+    } else {
+      alert('Admin code is required. Deletion aborted.');
     }
   };
 

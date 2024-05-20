@@ -24,13 +24,14 @@ export default function Payment() {
 
  useEffect(() => {
   const token = sessionStorage.getItem("token");
-  if (!token) {
-    sessionStorage.removeItem("token");
-    navigate("/login");
-  } else {
+  const booking = sessionStorage.getItem("booking");
+
+  if (!token || !booking) {
+    sessionStorage.removeItem("booking");
+
+    navigate("/booking");
   }
 }, [navigate]);
-
 
  useEffect(() => {
     const tokenFromStorage = sessionStorage.getItem('token');
@@ -65,47 +66,74 @@ export default function Payment() {
     }
  }, []);
 
+
  const handleBooking = async (e) => {
   e.preventDefault();
   const newBooking = {
-      carModel: booking.carModel,
-      licensePlate: booking.licensePlate,
-      bookingStartDate: booking.bookingStartDate,
-      bookingEndDate: booking.bookingEndDate,
-      price,
-      title,
-      email: userInfo.email,
+    carModel: booking.carModel,
+    licensePlate: booking.licensePlate,
+    bookingStartDate: booking.bookingStartDate,
+    bookingEndDate: booking.bookingEndDate,
+    price,
+    title,
+    email: userInfo.email,
   };
+
   try {
-      const res = await axios.post("http://localhost:5000/api/booking", newBooking);
-      console.log(res.data);
-      // Booking is considered successful at this point
-      setModalMessage("Booking done successfully.");
-      setIsModalOpen(true);
-      // Remove items from sessionStorage
-      sessionStorage.removeItem('title');
-      sessionStorage.removeItem('booking');
-      sessionStorage.removeItem('email');
-      sessionStorage.removeItem('price');
-      // Redirect after a delay to allow the modal to be seen
-      setTimeout(() => {
-          window.location.href = "/booking";
-      }, 2000);
+    // First API call to /api/booking
+    const res1 = await axios.post("http://localhost:5000/api/booking", newBooking);
+    console.log(res1.data); // Log response from first API
+
+    // Prepare data for decrementing capacity
+    const decrementData = {
+      location: booking.carModel,
+      category: title,
+    };
+
+    // API call to decrement capacity
+    const res2 = await axios.post("http://localhost:5000/api/decrement-capacity", decrementData);
+    console.log(res2.data); // Log response from decrement capacity API
+
+    // Booking is considered successful at this point
+    setModalMessage("Booking done successfully.");
+    setIsModalOpen(true);
+
+    // New API call to /api/archive to save the booking information
+    const archiveData = {
+     ...newBooking,
+      status: "Booked",
+    };
+    const res3 = await axios.post("http://localhost:5000/api/archive", archiveData);
+    console.log(res3.data); // Log response from archive API
+
+    // Remove items from sessionStorage
+    sessionStorage.removeItem('title');
+    sessionStorage.removeItem('booking');
+    sessionStorage.removeItem('email');
+    sessionStorage.removeItem('price');
+
+    // Redirect after a delay to allow the modal to be seen
+    setTimeout(() => {
+      window.location.href = "/booking";
+    }, 2000);
   } catch (err) {
-      console.error(err);
-      setModalMessage("error");
-      setIsModalOpen(true);
-      // Remove items from sessionStorage
-      sessionStorage.removeItem('title');
-      sessionStorage.removeItem('booking');
-      sessionStorage.removeItem('email');
-      sessionStorage.removeItem('price');
-      // Redirect after a delay to allow the modal to be seen
-      setTimeout(() => {
-          window.location.href = "/booking";
-      }, 2000);
+    console.error(err);
+    setModalMessage("Error occurred during booking.");
+    setIsModalOpen(true);
+
+    // Remove items from sessionStorage
+    sessionStorage.removeItem('title');
+    sessionStorage.removeItem('booking');
+    sessionStorage.removeItem('email');
+    sessionStorage.removeItem('price');
+
+    // Redirect after a delay to allow the modal to be seen
+    setTimeout(() => {
+      window.location.href = "/booking";
+    }, 2000);
   }
 };
+
 
 
 // Function to format booking information into a string

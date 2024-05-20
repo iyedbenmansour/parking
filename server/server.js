@@ -4,15 +4,27 @@ const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const { Resend } = require('resend');
 const session = require('express-session');
+const mongoose = require("mongoose");
+
 
 app.use(session({
-  secret: 'your-secret-key', 
+  secret: 'your-secret-key', // Replace with your own secret key
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: false } 
+  cookie: { secure: false } // Set to true if you're using HTTPS
  }));
 
- app.use(cors());
+ const corsOptions = {
+  origin: true, // Allows any origin to connect
+  credentials: true, // Needed if you're sending cookies/session info
+};
+
+app.use(cors(corsOptions));
+
+// Body parser middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
  app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -20,13 +32,18 @@ const UserModel = require("./models/userModels");
 const BookingModel = require("./models/bookingModels");
 const ContactUsModel = require("./models/contactusModel");
 const Variable = require("./models/variableModels");
+const ArchiveModel = require("./models/arechivemodels");
+
+
 // Initialize Resend instance
-const resend = new Resend('re_5qBKgAne_NYwNS673AxrbDAQiexxFUZnM ');
+const resend = new Resend('re_5qBKgAne_NYwNS673AxrbDAQiexxFUZnM');
 require('dotenv').config();
 const port = process.env.PORT;
 
 require("./config/parking.config");
 
+
+//harhi
 app.post("/api/register", async (req, res) => {
     const { fullname, email, password, phoneNumber, cin, role } = req.body;
     const newUser = { fullname, email, password, phoneNumber, cin, role };
@@ -146,7 +163,7 @@ app.get("/api/user/:email", async (req, res) => {
     }
 });
 
-
+//hethi update 
 app.put('/api/updateUser/:id', async (req, res) => {
   try {
       const { id } = req.params; // Extracting id directly
@@ -459,6 +476,34 @@ app.post("/api/booking", async (req, res) => {
 
 
 
+
+app.post("/api/archive", async (req, res) => {
+  try {
+    const { email, carModel, licensePlate, bookingStartDate, bookingEndDate, price, title } = req.body;
+
+    // Prepare the booking object
+    const booking = {
+      email,
+      carModel,
+      licensePlate,
+      bookingStartDate,
+      bookingEndDate,
+      price,
+      title,
+    };
+
+    // Save booking data to the database using ArchiveModel
+    const newBooking = new ArchiveModel(booking);
+    await newBooking.save();
+
+    res.status(201).json({ message: "Booking confirmed successfully" });
+  } catch (error) {
+    console.error('Error processing booking:', error);
+    res.status(500).json({ message: "Error processing booking" });
+  }
+});
+
+
 app.get("/api/bookings", async (req, res) => {
     console.log("Bookings retrived"); // Debugging line
     try {
@@ -495,22 +540,49 @@ app.get("/api/allbookings", async (req, res) => {
 });
 
 
+//archive all booking   
+app.get("/api/allbookingsarchive", async (req, res) => {
+  console.log("Bookings retrieved"); // Debugging line
+  try {
+      // Fetch all bookings from the archive table without filtering by email
+      const bookings = await ArchiveModel.find({});
+
+      res.json({
+          bookings: bookings,
+          message: "Bookings fetched successfully from archive"
+      });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Error fetching bookings from archive" });
+  }
+});
+
+
 app.delete("/api/bookings/:id", async (req, res) => {
-    console.log("Booking delete request received"); // Debugging line
-    try {
-        // Extract the booking ID from the request parameters
-        const id = req.params.id; // Corrected line
+  console.log("Booking delete request received"); // Debugging line
+  try {
+      // Extract the booking ID from the request parameters
+      const id = req.params.id;
 
-        // Delete the booking with the specified ID
-        await BookingModel.findByIdAndDelete(id);
+      // Retrieve the booking before deletion to get the location and category
+      const booking = await BookingModel.findById(id);
+      if (!booking) {
+          return res.status(404).json({ message: "Booking not found" });
+      }
 
-        res.json({
-            message: "Booking deleted successfully"
-        });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Error deleting booking" });
-    }
+      // Delete the booking with the specified ID
+      await BookingModel.findByIdAndDelete(id);
+
+      // Increment capacity by 1 for the retrieved location and category
+      await incrementCapacity(booking.carModel, booking.title, 1);
+
+      res.json({
+          message: "Booking deleted successfully"
+      });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Error deleting booking" });
+  }
 });
 
 app.post("/api/contact", async (req, res) => {
@@ -839,7 +911,7 @@ app.patch('/api/variables', async (req, res) => {
   
 
     // Use a fixed id for the Variable document
-    const fixedId = '663e8a7b6d08256ef51d11a7';
+    const fixedId = '663f716275995050b1cd3bec';
 
     // Check if the Variable document already exists
     let variable = await Variable.findOne({ _id: fixedId });
@@ -905,6 +977,149 @@ app.get('/api/variables', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch variable' });
   }
 });
+
+
+
+app.post('/api/decrement-capacity', async (req, res) => {
+  const { location, category } = req.body;
+  
+  console.log('Received location:', location);
+  console.log('Received category:', category);
+
+  // Map location and category to the specific database field
+  const fieldMap = {
+    'Sfax–Thyna International Airport': {
+      'Economy Zone': 'sfaxcapeco',
+      'Premium Zone': 'sfaxcaplux',
+      'Handicap Zone': 'sfaxcaphad'
+    },
+    'Djerba–Zarzis international Airport': {
+      'Economy Zone': 'djcapeco',
+      'Premium Zone': 'djcaplux',
+      'Handicap Zone': 'djcaphad'
+    }
+  };
+
+  // Check if the provided location and category are valid
+  if (!fieldMap[location] || !fieldMap[location][category]) {
+    console.error('Invalid location or category:', location, category);
+    return res.status(400).json({ error: 'Invalid location or category' });
+  }
+
+  const fieldToUpdate = fieldMap[location][category];
+
+  try {
+    // Find the Variable document and decrement the specific field
+    const updatedVariable = await Variable.findOneAndUpdate(
+      { _id: '663e8a7b6d08256ef51d11a7' }, // Assuming a fixed ID for simplicity
+      { $inc: { [fieldToUpdate]: -1 } }, // Decrement the capacity by 1
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedVariable) {
+      console.error('Variable not found for ID:', '663e8a7b6d08256ef51d11a7');
+      return res.status(404).json({ error: 'Variable not found' });
+    }
+
+    // Respond with the updated Variable document
+    res.status(200).json(updatedVariable);
+  } catch (error) {
+    console.error('Error updating variable:', error);
+    res.status(500).json({ error: 'Failed to update variable' });
+  }
+});
+
+
+app.post('/api/count-expired-reservations', async (req, res) => {
+  try {
+    const currentDate = new Date();
+    const expiredReservations = await BookingModel.aggregate([
+      {
+        $match: {
+          bookingEndDate: { $lt: currentDate }
+        }
+      },
+      {
+        $group: {
+          _id: {
+            location: '$carModel',
+            category: '$title'
+          },
+          count: { $sum: 1 }
+        }
+      }
+    ]);
+
+    for (const reservation of expiredReservations) {
+      const { location, category } = reservation._id;
+      const count = reservation.count;
+      await incrementCapacity(location, category, count);
+    }
+
+    res.status(200).json({ message: 'Expired reservations counted and processed' });
+  } catch (error) {
+    console.error('Error counting expired reservations:', error);
+    res.status(500).json({ error: 'Failed to count expired reservations' });
+  }
+});
+
+
+
+async function incrementCapacity(location, category, count) {
+  const fieldMap = {
+    'Sfax–Thyna International Airport': {
+      'Economy Zone': 'sfaxcapeco',
+      'Premium Zone': 'sfaxcaplux',
+      'Handicap Zone': 'sfaxcaphad'
+    },
+    'Djerba–Zarzis international Airport': {
+      'Economy Zone': 'djcapeco',
+      'Premium Zone': 'djcaplux',
+      'Handicap Zone': 'djcaphad'
+    }
+  };
+
+  const fieldToUpdate = fieldMap[location][category];
+
+  if (!fieldToUpdate) {
+    throw new Error('Invalid location or category');
+  }
+
+  try {
+    const updatedVariable = await Variable.findOneAndUpdate(
+      { _id: '663e8a7b6d08256ef51d11a7' },
+      { $inc: { [fieldToUpdate]: count } },
+      { new: true }
+    );
+
+    if (!updatedVariable) {
+      throw new Error('Variable not found');
+    }
+
+    console.log(`Incremented capacity for ${location} - ${category} by ${count}`);
+  } catch (error) {
+    console.error('Error incrementing capacity:', error);
+    throw error;
+  }
+}
+
+
+
+
+app.delete('/api/delete-expired-reservations', async (req, res) => {
+  try {
+    const currentDate = new Date();
+    const result = await BookingModel.deleteMany({
+      bookingEndDate: { $lt: currentDate }
+    });
+
+    res.status(200).json({ message: `Deleted ${result.deletedCount} expired reservations` });
+  } catch (error) {
+    console.error('Error deleting expired reservations:', error);
+    res.status(500).json({ error: 'Failed to delete expired reservations' });
+  }
+});
+
 
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
