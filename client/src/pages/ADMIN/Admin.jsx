@@ -37,7 +37,7 @@ export default function Admin() {
         <div className="dashboard-split">
           <div className="dashboard-content">
             <button className="buttons-container" onClick={() => navigate('/var')}>Update variables</button>
-            <button className="buttons-container" onClick={() => navigate('/bo')}>live booking</button>
+            <button className="buttons-container" onClick={() => navigate('/bo')}>booking</button>
             <button className="buttons-container" onClick={() => navigate('/allticket')}>All Tickets</button>
             <button className="buttons-container" onClick={() => navigate('/alluser')}>All Users</button>
             <button className="buttons-container" onClick={() => navigate('/alladmin')}>all admins</button>

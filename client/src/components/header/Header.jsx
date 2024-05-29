@@ -33,6 +33,8 @@ const Header = ({ type }) => {
     // Save to session storage
     sessionStorage.setItem("start", start);
     sessionStorage.setItem("end", end);
+    sessionStorage.setItem("p", destination);
+
 
     navigate("/empty", { state: { destination, start, end } });
   };
@@ -67,11 +69,11 @@ const Header = ({ type }) => {
                   onChange={(e) => setDestination(e.target.value)}
                 >
                   <option value="">Select an airport ..</option>
-                  <option value="location1">
+                  <option value="Sfax–Thyna International Airport">
                     {" "}
                     Sfax–Thyna International Airport
                   </option>
-                  <option value="location2">
+                  <option value="Djerba Zarzis International Airport">
                     Djerba Zarzis International Airport
                   </option>
                 </select>

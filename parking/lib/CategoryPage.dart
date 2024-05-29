@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
 import 'package:parking/component/PlanBox.dart'; // Ensure this is the correct path
 
 class CategoryPage extends StatefulWidget {
@@ -48,15 +49,18 @@ class _CategoryPageState extends State<CategoryPage> {
           premp = data['luxp'];
           handp = data['hadp'];
           // Assigning values based on selected location using ternary operator
-          ecoAvailable = widget.selectedLocation == "Sfax–Thyna International Airport"
-              ? data['sfaxcapeco']
-              : data['djcapeco'];
-          luxAvailable = widget.selectedLocation == "Sfax–Thyna International Airport"
-              ? data['sfaxcaplux']
-              : data['djcaplux'];
-          handAvailable = widget.selectedLocation == "Sfax–Thyna International Airport"
-              ? data['sfaxcaphad']
-              : data['djcaphad'];
+          ecoAvailable =
+              widget.selectedLocation == "Sfax–Thyna International Airport"
+                  ? data['sfaxcapeco']
+                  : data['djcapeco'];
+          luxAvailable =
+              widget.selectedLocation == "Sfax–Thyna International Airport"
+                  ? data['sfaxcaplux']
+                  : data['djcaplux'];
+          handAvailable =
+              widget.selectedLocation == "Sfax–Thyna International Airport"
+                  ? data['sfaxcaphad']
+                  : data['djcaphad'];
         });
       } else {
         throw Exception('Failed to load parking data');
@@ -93,7 +97,7 @@ class _CategoryPageState extends State<CategoryPage> {
               PlanBox(
                 title: "Economy Zone",
                 description:
-                    "Ideal for compact cars and motorcycles. Available spots: $ecoAvailable",
+                    "This zone could be designed for vehicles that require less space, such as compact cars or motorcycles. It's a great option for those who don't need a lot of parking space: $ecoAvailable available spots",
                 price: ecoPrice,
                 icon: Icons.directions_car,
                 selectedLocation: widget.selectedLocation,
@@ -105,7 +109,7 @@ class _CategoryPageState extends State<CategoryPage> {
               PlanBox(
                 title: "Premium Zone",
                 description:
-                    "Spacious spots for SUVs and luxury vehicles. Available spots: $luxAvailable",
+                    "Ideal for luxury vehicles or those that require more space, such as SUVs or large sedans. This zone offers more spacious parking spaces and might include additional amenities like reserved parking spots or valet services: $luxAvailable available spots",
                 price: luxPrice,
                 icon: Icons.local_parking,
                 selectedLocation: widget.selectedLocation,
@@ -117,7 +121,7 @@ class _CategoryPageState extends State<CategoryPage> {
               PlanBox(
                 title: "Handicap Zone",
                 description:
-                    "Accessible parking for permit holders. Available spots: $handAvailable",
+                    "This zone is designed to accommodate vehicles with handicap parking permits. It ensures that individuals with disabilities have easy access to parking spaces: $handAvailable available spots",
                 price: handPrice,
                 icon: Icons.accessible,
                 selectedLocation: widget.selectedLocation,

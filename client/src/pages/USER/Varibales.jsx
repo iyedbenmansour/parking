@@ -95,8 +95,8 @@ const Variable = ({ initialData, onSubmit }) => {
               <option value="sfaxcap">Sfax–Thyna International Airport capacity</option>
               <option value="djcap">Djerba–Zarzis international Airport capacity</option>
               <option value="ecop">Economy Zone price</option>
-              <option value="luxp">Premium Zone</option>
-              <option value="hadp">Handicap Zone</option>
+              <option value="luxp">Premium Zone price</option>
+              <option value="hadp">Handicap Zone price</option>
               <option value="sfaxcaplux">Sfax–Thyna International Airport Premium Zone capacity</option>
               <option value="sfaxcapeco">Sfax–Thyna International Airport Economy Zone capacity</option>
               <option value="sfaxcaphad">Sfax–Thyna International Airport Handicap Zone capacity</option>

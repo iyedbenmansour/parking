@@ -71,12 +71,13 @@ const Allticket = () => {
               <li key={index} className="booking-item">
                 <p>{contact.errorType}</p>
                 <div className="booking-details">
-                  <p
-                    className="email-link"
-                    onClick={() => navigate(`/alluser?email=${contact.email}`)}
-                  >
-                    Email: {contact.email}
-                  </p>
+                <p
+  className="email-link"
+  onClick={() => window.location.href = `mailto:${contact.email}`}
+>
+  Email: {contact.email}
+</p>
+
                   <p>Error Type: {contact.errorType}</p>
                   <p>Specific Error: {contact.specificError}</p>
                   <p>Message: {contact.message}</p>

@@ -14,6 +14,7 @@ const BookingCalculator = () => {
   const [bookingToDelete, setBookingToDelete] = useState(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [bookings, setBookings] = useState([]);
+  const [recentBookings, setRecentBookings] = useState([]);
 
   const navigate = useNavigate();
 
@@ -28,6 +29,8 @@ const BookingCalculator = () => {
           return endDate >= currentDate;
         });
         setFilteredBookings(filteredData);
+        setRecentBookings(bookings);
+        
         const groupedBookings = filteredData.reduce((acc, booking) => {
           const carModel = booking.carModel;
           const title = booking.title;
@@ -128,6 +131,33 @@ const BookingCalculator = () => {
             </ul>
           ) : (
             <p className="no-bookings">No bookings found.</p>
+          )}
+        </div>
+      </div>
+      <div className="mainContentArea">
+        <div className="bookingForm">
+          <h2>Recent Booking History</h2>
+          {recentBookings.length > 0 ? (
+            <ul>
+              {recentBookings.map((booking, index) => (
+                <li key={index} className="booking-item">
+                  <p>{booking.licensePlate}</p>
+                  <div className="booking-details">
+                    <p className="email-link" onClick={() => goToUserDetails(booking.email)}>
+                      Email: {booking.email}
+                    </p>
+                    <p>Airport: {booking.carModel}</p>
+                    <p>Booking Start Date: {new Date(booking.bookingStartDate).toLocaleDateString()}</p>
+                    <p>Booking End Date: {new Date(booking.bookingEndDate).toLocaleDateString()}</p>
+                    <p>Price: {booking.price} dt</p>
+                    <p>Title: {booking.title}</p>
+                  </div>
+                  <FaTrash className="delete-icon" onClick={() => handleDeleteConfirmation(booking._id)} />
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="no-bookings">No recent bookings found.</p>
           )}
         </div>
       </div>

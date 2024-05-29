@@ -98,7 +98,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
     }
     try {
       final response = await http.post(
-        Uri.parse('http://localhost:5000/api/verifyCode'),
+        Uri.parse('http://localhost:5000/api/verifyCodemobile'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -158,7 +158,10 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Forget Password'),
+        title: Text(
+          'Forget Password',
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: Color(0xFF4b39ef),
       ),
       body: Center(

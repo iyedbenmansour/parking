@@ -34,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
         if (data['user'] != null) {
           SharedPreferences prefs = await SharedPreferences.getInstance();
           await prefs.setString(
-              'token', data['user']); // Assuming 'user' contains the token
+              'token', data['user']); 
 
           setState(() {
             modalMessage = "Logged in successfully.";
@@ -84,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                   padding: EdgeInsets.all(20.0),
                   decoration: BoxDecoration(
                     color: Color.fromARGB(255, 215, 212,
-                        212), // Set the background color to light grey here
+                        212), 
                     borderRadius: BorderRadius.circular(10.0),
                     border: Border.all(
                         color: Color.fromARGB(255, 0, 0, 0), width: 2.0),

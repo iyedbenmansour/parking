@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:parking/AlertModal.dart'; // Ensure this is the correct path
+import 'package:parking/AlertModal.dart';
 
 class RegisterPage extends StatefulWidget {
   @override

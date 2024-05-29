@@ -6,11 +6,14 @@ import "./profile.css";
 import { FaTrash } from "react-icons/fa";
 import Navbar from "../../../components/navbar/Navbar";
 import Footer from "../../../components/footer/Footer";
+import Alertadmin from "../../../components/alert/Alertadmin"; // Adjust the import path as necessary
 
 function Profile() {
   const [bookings, setBookings] = useState([]);
   const [contacts, setContacts] = useState([]);
   const [user, setUser] = useState(null);
+  const [showConfirmation, setShowConfirmation] = useState(false); // State to control the confirmation dialog
+  const [itemToDelete, setItemToDelete] = useState({type: '', id: ''}); // State to store the type and ID of the item to be deleted
 
   const navigate = useNavigate();
 
@@ -25,37 +28,36 @@ function Profile() {
   useEffect(() => {
     const token = sessionStorage.getItem("token");
     if (typeof token === "string") {
-      // Ensure the token is a string
       const decodedToken = jwtDecode(token);
       const email = decodedToken.email;
 
       // Fetch contacts
       axios
-        .get(`http://localhost:5000/api/contact?email=${email}`)
-        .then((response) => {
+       .get(`http://localhost:5000/api/contact?email=${email}`)
+       .then((response) => {
           setContacts(response.data.contact.reverse());
         })
-        .catch((error) => {
+       .catch((error) => {
           console.error("Error fetching contacts:", error);
         });
 
       // Fetch bookings
       axios
-        .get(`http://localhost:5000/api/bookings?email=${email}`)
-        .then((response) => {
+       .get(`http://localhost:5000/api/bookings?email=${email}`)
+       .then((response) => {
           setBookings(response.data.bookings.reverse());
         })
-        .catch((error) => {
+       .catch((error) => {
           console.error("Error fetching bookings:", error);
         });
 
       // Fetch user information
       axios
-        .get(`http://localhost:5000/api/user/${email}`)
-        .then((response) => {
+       .get(`http://localhost:5000/api/user/${email}`)
+       .then((response) => {
           setUser(response.data.user);
         })
-        .catch((error) => {
+       .catch((error) => {
           console.error("Error fetching user details:", error);
         });
     } else {
@@ -63,36 +65,33 @@ function Profile() {
     }
   }, []);
 
-  const handleDelete = (bookingId) => {
-    axios
-      .delete(`http://localhost:5000/api/bookings/${bookingId}`)
-      .then((response) => {
-        const updatedBookings = bookings.filter(
-          (booking) => String(booking._id) !== String(bookingId)
-        );
-        setBookings(updatedBookings);
-      })
-      .catch((error) => {
-        console.error("Error deleting booking:", error);
-      });
+  const handleDelete = (type, itemId) => {
+    setItemToDelete({type, id: itemId});
+    setShowConfirmation(true);
   };
 
-  const handleDeleteContact = (contactId) => {
-    axios
-      .delete(`http://localhost:5000/api/contacts/${contactId}`)
-      .then((response) => {
-        const updatedContacts = contacts.filter(
-          (contact) => String(contact._id) !== String(contactId)
-        );
-        setContacts(updatedContacts);
-      })
-      .catch((error) => {
-        console.error("Error deleting contact:", error);
-      });
+  const confirmDelete = async () => {
+    try {
+      let url = '';
+      if (itemToDelete.type === 'booking') {
+        url = `http://localhost:5000/api/bookings/${itemToDelete.id}`;
+      } else if (itemToDelete.type === 'contact') {
+        url = `http://localhost:5000/api/contacts/${itemToDelete.id}`;
+      }
+      await axios.delete(url);
+      if (itemToDelete.type === 'booking') {
+        setBookings(bookings.filter((booking) => String(booking._id)!== String(itemToDelete.id)));
+      } else if (itemToDelete.type === 'contact') {
+        setContacts(contacts.filter((contact) => String(contact._id)!== String(itemToDelete.id)));
+      }
+      setShowConfirmation(false);
+    } catch (error) {
+      console.error("Error deleting item:", error);
+    }
   };
 
-  const handleEdit = () => {
-    navigate("/edit");
+  const cancelDelete = () => {
+    setShowConfirmation(false);
   };
 
   return (
@@ -114,8 +113,7 @@ function Profile() {
                 <div className="profiles">
                   <p>Phone Number: {user.phoneNumber}</p>
                 </div>
-
-                <button onClick={handleEdit}>Edit Profile</button>
+                <button onClick={() => navigate("/edit")}>Edit Profile</button>
               </div>
             )}
           </div>
@@ -127,7 +125,7 @@ function Profile() {
               <div key={index} className="reservation-box">
                 <FaTrash
                   className="delete-icon"
-                  onClick={() => handleDelete(booking._id)}
+                  onClick={() => handleDelete('booking', booking._id)}
                 />
                 <p>Airport : {booking.carModel}</p>
                 <p>License Plate: {booking.licensePlate}</p>
@@ -151,7 +149,7 @@ function Profile() {
               <div key={index} className="reservation-box">
                 <FaTrash
                   className="delete-icon"
-                  onClick={() => handleDeleteContact(contact._id)}
+                  onClick={() => handleDelete('contact', contact._id)}
                 />
                 <p>Email: {contact.email}</p>
                 <p>Error Type: {contact.errorType}</p>
@@ -165,6 +163,15 @@ function Profile() {
           </div>
         </div>
       </div>
+      <Alertadmin
+        isOpen={showConfirmation}
+        onClose={cancelDelete}
+        primaryLabel="Confirm"
+        primaryOnClick={confirmDelete}
+        secondaryLabel="Cancel"
+        secondaryOnClick={cancelDelete}
+        message="Are you sure you want to delete this item?"
+      />
       <Footer />
     </>
   );

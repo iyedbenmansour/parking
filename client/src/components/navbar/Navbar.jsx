@@ -47,7 +47,7 @@ const Navbar = memo(function Navbar({ className = '' }) {
         <a href="/booking" className="reservation">Reservation</a>
         )}
          {isAdmin ? (
-          <a href="/allbooking" className="reservation">bookings</a> 
+          <a href="/allbooking" className="reservation">archive</a> 
         ) : (
         <a href="/contactus" className="contactUs">Contact Us</a>
         )}

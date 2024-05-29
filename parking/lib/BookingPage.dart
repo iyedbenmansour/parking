@@ -6,8 +6,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 class BookingPage extends StatefulWidget {
   final DateTime? startDate;
   final DateTime? endDate;
+  final String? locationSelected;
 
-  BookingPage({Key? key, this.startDate, this.endDate}) : super(key: key);
+  BookingPage({
+    Key? key,
+    this.startDate,
+    this.endDate,
+    this.locationSelected,
+  }) : super(key: key);
 
   @override
   _BookingPageState createState() => _BookingPageState();
@@ -20,7 +26,10 @@ class _BookingPageState extends State<BookingPage> {
   TimeOfDay? endTime;
   String? selectedLocation;
   final TextEditingController licensePlateController = TextEditingController();
-  final List<String> locations = ['Djerba–Zarzis international Airport', 'Sfax–Thyna International Airport'];
+  final List<String> locations = [
+    'Djerba–Zarzis international Airport',
+    'Sfax–Thyna International Airport'
+  ];
 
   @override
   void initState() {
@@ -28,6 +37,7 @@ class _BookingPageState extends State<BookingPage> {
     _checkLoginStatus();
     startDate = widget.startDate;
     endDate = widget.endDate;
+    selectedLocation = widget.locationSelected;
   }
 
   Future<void> _checkLoginStatus() async {
@@ -119,16 +129,37 @@ class _BookingPageState extends State<BookingPage> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text('Error'),
-        content: Text(message),
+        title: Text(
+          'Error',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF4b39ef), // Custom color for the title
+          ),
+        ),
+        content: Text(
+          message,
+          style: TextStyle(
+            color: Colors.black54, // Subtle text color for the content
+          ),
+        ),
         actions: <Widget>[
           TextButton(
             onPressed: () {
               Navigator.of(ctx).pop();
             },
-            child: Text('Okay'),
+            child: Text(
+              'Okay',
+              style: TextStyle(
+                color: Color(0xFF4b39ef), // Custom color for button text
+              ),
+            ),
           ),
         ],
+        shape: RoundedRectangleBorder(
+          borderRadius:
+              BorderRadius.circular(20), // Rounded corners for the dialog
+        ),
+        backgroundColor: Colors.white, // Background color for the dialog
       ),
     );
   }

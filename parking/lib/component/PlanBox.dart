@@ -28,7 +28,6 @@ class PlanBox extends StatefulWidget {
 }
 
 class _PlanBoxState extends State<PlanBox> {
-
   void _handleClick() async {
     showDialog(
       context: context,
@@ -41,7 +40,7 @@ class _PlanBoxState extends State<PlanBox> {
             TextButton(
               child: Text('Close'),
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
+                Navigator.of(context).pop(); 
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => PaymentPage(
                     selectedLocation: widget.selectedLocation,

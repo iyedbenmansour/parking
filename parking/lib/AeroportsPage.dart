@@ -19,9 +19,15 @@ class AeroportsPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               // Aéroport de Sfax-Thyna
-              Center(
-                child: Image.network(
-                    'https://www.concept.tn/wp-content/uploads/2022/01/1.png'), // Example image URL
+              Container(
+                height: MediaQuery.of(context).size.height * 0.35,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(
+                        'https://lh3.googleusercontent.com/p/AF1QipPtFJ2dRfydrA_x9hI_e_PrfPWpxe3eYsUeXyhW=s1360-w1360-h1020'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
               SizedBox(height: 10),
               Text(
@@ -46,9 +52,15 @@ class AeroportsPage extends StatelessWidget {
               ),
               SizedBox(height: 40),
               // Aéroport de Djerba Zarzis
-              Center(
-                child: Image.network(
-                    'https://www.concept.tn/wp-content/uploads/2022/01/1.png'), // Example image URL
+              Container(
+                height: MediaQuery.of(context).size.height * 0.35,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEqEUlFTJpWvaPsCH2Smh4qyISgZYcM8aJ-w&usqp=CAU'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
               SizedBox(height: 10),
               Text(

@@ -800,12 +800,12 @@ app.post('/api/sendVerificationCode', async (req, res) => {
          </head>
          <body>
              <div class="container">
-                 <h1>YourAppName - Verification Code</h1>
+                 <h1>OACA - Verification Code</h1>
                  <p class="verification-code">Hello,</p>
                  <p class="verification-code">Your verification code is: <strong>${verificationCode}</strong></p>
                  <p class="verification-code">Please use this code to verify your email.</p>
                  <p class="verification-code">Thank you,</p>
-                 <p class="verification-code">YourAppName Team</p>
+                 <p class="verification-code">OACA Team</p>
              </div>
          </body>
          </html>
@@ -836,6 +836,17 @@ app.post('/api/sendVerificationCode', async (req, res) => {
      res.json({ verified: false });
   }
  });
+
+ app.post('/api/verifyCodemobile', async (req, res) => {
+  const { email, verificationCode } = req.body;
+  const storedCode = verificationCode;
+  if (storedCode && storedCode.toString() === verificationCode.toString()) {
+     res.json({ verified: true });
+  } else {
+     res.json({ verified: false });
+  }
+ });
+
 app.post('/api/checkEmail', async (req, res) => {
   const { email } = req.body;
   const user = await UserModel.findOne({ email });

@@ -9,23 +9,23 @@ class AlertModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: Colors.white, // White background
+      backgroundColor: Colors.white, 
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15), // Rounded corners
+        borderRadius: BorderRadius.circular(15), 
       ),
       title: Text(
         'Alert',
         style: TextStyle(
-          color: Colors.black, // Darker text for better contrast
-          fontWeight: FontWeight.bold, // Bold title
-          fontSize: 24, // Larger font size for emphasis
+          color: Colors.black, 
+          fontWeight: FontWeight.bold, 
+          fontSize: 24,
         ),
       ),
       content: Text(
         message,
         textAlign: TextAlign.center,
         style: TextStyle(
-          fontFamily: 'Open Sans', // Use a modern font
+          fontFamily: 'Open Sans', 
         ),
       ),
       actions: <Widget>[
@@ -34,12 +34,12 @@ class AlertModal extends StatelessWidget {
           child: Text(
             'Close',
             style: TextStyle(
-              color: Colors.white, // White text
-              fontWeight: FontWeight.bold, // Bold text
+              color: Colors.white, 
+              fontWeight: FontWeight.bold, 
             ),
           ),
           style: TextButton.styleFrom(
-            backgroundColor: Color(0xFF0071C2), // Blue background
+            backgroundColor: Color(0xFF0071C2),
             padding: EdgeInsets.symmetric(
                 horizontal: 24,
                 vertical: 12), // Increased padding for better touch target size

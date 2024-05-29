@@ -62,6 +62,7 @@ export default function Empty() {
   // Retrieve start and end datetime strings from sessionStorage
  const storedStart = sessionStorage.getItem("start");
  const storedEnd = sessionStorage.getItem("end");
+ const pos = sessionStorage.getItem("p"); // Define a function to handle the booking form submission
  let startTime, endTime; // Define these variables outside the if block
 
  
@@ -91,9 +92,9 @@ const luxPrice = calculatePrice(startTime, endTime, luxp);
 const handPrice = calculatePrice(startTime, endTime, hadp);
 
 // Determine which capacities to display based on the booking car model
-const displayEcoCapacity = bookingCarModel === "Sfax–Thyna International Airport"? sfaxcapeco : djcapeco;
-const displayLuxCapacity = bookingCarModel === "Sfax–Thyna International Airport"? sfaxcaplux : djcaplux;
-const displayHandCapacity = bookingCarModel === "Sfax–Thyna International Airport"? sfaxcaphad : djcaphad;
+const displayEcoCapacity = pos === "Sfax–Thyna International Airport"? sfaxcapeco : djcapeco;
+const displayLuxCapacity = pos === "Sfax–Thyna International Airport"? sfaxcaplux : djcaplux;
+const displayHandCapacity = pos === "Sfax–Thyna International Airport"? sfaxcaphad : djcaphad;
 
  
 return (
